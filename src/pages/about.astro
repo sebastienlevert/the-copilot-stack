@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Learn about The Copilot Stack - your comprehensive resource for Microsoft Copilot extensibility."
+>
+  <Header />
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <article class="max-w-4xl mx-auto prose prose-invert">
+      <h1 class="text-5xl font-bold text-terminal-green mb-6 terminal-prompt">
+        About The Copilot Stack
+      </h1>
+
+      <div class="text-terminal-white space-y-6">
+        <p class="text-xl">
+          Welcome to <strong class="text-terminal-green">The Copilot Stack</strong> - your comprehensive resource for Microsoft Copilot extensibility.
+        </p>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          Our Mission
+        </h2>
+        <p>
+          We aim to empower developers and organizations to build powerful extensions for Microsoft Copilot.
+          Through in-depth technical content, video tutorials, and podcast episodes, we share practical
+          knowledge, best practices, and real-world examples of Copilot extensibility.
+        </p>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          What We Offer
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-terminal-white">
+          <li>
+            <strong class="text-terminal-green">Technical Blog Posts:</strong> Detailed articles covering
+            Copilot extensibility topics, development patterns, and implementation guides.
+          </li>
+          <li>
+            <strong class="text-terminal-green">Video Tutorials:</strong> Visual walkthroughs of building
+            Copilot extensions, available on YouTube.
+          </li>
+          <li>
+            <strong class="text-terminal-green">Podcast Episodes:</strong> Deep dives into Copilot extensibility
+            topics, available on Spotify and Apple Music.
+          </li>
+        </ul>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          Topics We Cover
+        </h2>
+        <ul class="list-disc ml-6 space-y-2 text-terminal-white">
+          <li>Microsoft Copilot API and SDK usage</li>
+          <li>Building custom plugins and extensions</li>
+          <li>Integration patterns and best practices</li>
+          <li>Authentication and security considerations</li>
+          <li>Performance optimization techniques</li>
+          <li>Real-world case studies and examples</li>
+        </ul>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          About the Author
+        </h2>
+        <p>
+          <strong class="text-terminal-green">Sébastien Levert</strong> is a passionate developer advocate
+          and Microsoft Copilot enthusiast. With years of experience in building enterprise solutions and
+          developer tools, Sébastien shares practical insights and hands-on guidance for developers looking
+          to extend Microsoft Copilot's capabilities.
+        </p>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          Get Involved
+        </h2>
+        <p>
+          The Copilot Stack is an open-source project. We welcome contributions, feedback, and suggestions
+          from the community. Whether you want to suggest topics, report issues, or contribute content,
+          we'd love to hear from you.
+        </p>
+
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="https://github.com/sebastienlevert/the-copilot-stack" target="_blank" rel="noopener noreferrer" class="btn">
+            GitHub Repository
+          </a>
+          <a href="https://twitter.com/sebastienlevert" target="_blank" rel="noopener noreferrer" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
+            Follow on Twitter/X
+          </a>
+          <a href="https://youtube.com/@sebastienlevert" target="_blank" rel="noopener noreferrer" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
+            YouTube Channel
+          </a>
+        </div>
+
+        <h2 class="text-3xl font-bold text-terminal-green mt-8 mb-4 terminal-prompt">
+          Technology Stack
+        </h2>
+        <p>
+          This website is built with modern web technologies for optimal performance and developer experience:
+        </p>
+        <ul class="list-disc ml-6 space-y-2 text-terminal-white">
+          <li><strong class="text-terminal-green">Astro:</strong> Static site generator for content-heavy sites</li>
+          <li><strong class="text-terminal-green">TypeScript:</strong> Type-safe development</li>
+          <li><strong class="text-terminal-green">Tailwind CSS:</strong> Utility-first styling</li>
+          <li><strong class="text-terminal-green">MDX:</strong> Markdown with component support</li>
+          <li><strong class="text-terminal-green">GitHub Pages:</strong> Fast and reliable hosting</li>
+          <li><strong class="text-terminal-green">Pagefind:</strong> Client-side search</li>
+        </ul>
+
+        <div class="mt-12 p-6 bg-terminal-gray border border-terminal-greenDim rounded-lg">
+          <p class="text-center text-terminal-greenDim">
+            Want to stay updated? Subscribe to our <a href="/rss.xml" class="text-terminal-green hover:underline">RSS feed</a>
+            or follow us on social media for the latest posts and episodes.
+          </p>
+        </div>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

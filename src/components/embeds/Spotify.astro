@@ -1,0 +1,39 @@
+---
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+
+// Extract Spotify ID from URL
+// Supports: https://open.spotify.com/episode/ID or https://open.spotify.com/show/ID
+const spotifyIdMatch = url.match(/\/(episode|show)\/([a-zA-Z0-9]+)/);
+const spotifyId = spotifyIdMatch ? spotifyIdMatch[2] : '';
+const type = spotifyIdMatch ? spotifyIdMatch[1] : 'episode';
+---
+
+{spotifyId ? (
+  <div class="spotify-embed">
+    <iframe
+      src={`https://open.spotify.com/embed/${type}/${spotifyId}`}
+      width="100%"
+      height="232"
+      frameborder="0"
+      allowtransparency="true"
+      allow="encrypted-media"
+      class="rounded-lg border border-terminal-greenDim"
+    ></iframe>
+  </div>
+) : (
+  <p class="text-terminal-greenDim">Invalid Spotify URL</p>
+)}
+
+<style>
+  .spotify-embed {
+    width: 100%;
+  }
+
+  iframe {
+    display: block;
+  }
+</style>

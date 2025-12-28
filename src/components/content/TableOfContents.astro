@@ -1,0 +1,49 @@
+---
+import type { TocHeading } from '../../utils/generateToc';
+
+interface Props {
+  headings: TocHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+{headings.length > 0 && (
+  <nav class="toc bg-terminal-gray border border-terminal-greenDim rounded-lg p-4">
+    <h2 class="text-lg font-bold text-terminal-green mb-3 terminal-prompt">
+      Table of Contents
+    </h2>
+    <ul class="space-y-2">
+      {headings.map((heading) => (
+        <li
+          class={`
+            ${heading.depth === 3 ? 'ml-4' : ''}
+          `}
+        >
+          <a
+            href={`#${heading.slug}`}
+            class="text-terminal-greenDim hover:text-terminal-green no-underline transition-colors text-sm"
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc ul {
+    list-style: none;
+    margin-left: 0;
+  }
+
+  .toc li {
+    margin-bottom: 0.5rem;
+  }
+
+  .toc a::before {
+    content: '> ';
+    color: var(--terminal-green);
+  }
+</style>

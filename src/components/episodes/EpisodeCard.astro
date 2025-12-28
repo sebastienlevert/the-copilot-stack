@@ -1,0 +1,65 @@
+---
+import { formatDateShort } from '../../utils/formatDate';
+import TagList from '../content/TagList.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  episodeNumber: number;
+  tags: string[];
+  youtubeId?: string;
+}
+
+const { slug, title, description, pubDate, episodeNumber, tags, youtubeId } = Astro.props;
+const thumbnailUrl = youtubeId
+  ? `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
+  : null;
+---
+
+<article class="card group">
+  <a href={`/episodes/${slug}`} class="no-underline hover:no-underline">
+    <div class="flex flex-col h-full">
+      {thumbnailUrl && (
+        <div class="mb-4 overflow-hidden rounded-lg border border-terminal-greenDim">
+          <img
+            src={thumbnailUrl}
+            alt={title}
+            class="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
+      <div class="flex-grow">
+        <div class="text-terminal-greenDim text-xs mb-2">
+          EPISODE {episodeNumber.toString().padStart(3, '0')}
+        </div>
+        <h2 class="text-2xl font-bold text-terminal-green mb-2 group-hover:text-terminal-greenDim transition-colors terminal-prompt">
+          {title}
+        </h2>
+        <p class="text-terminal-white mb-4 line-clamp-3">
+          {description}
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-terminal-greenDim mb-3">
+        <time datetime={pubDate.toISOString()}>
+          {formatDateShort(pubDate)}
+        </time>
+      </div>
+      {tags.length > 0 && (
+        <div class="mt-auto">
+          <TagList tags={tags} />
+        </div>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

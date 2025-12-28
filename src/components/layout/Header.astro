@@ -1,0 +1,38 @@
+---
+import Navigation from './Navigation.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-terminal-greenDim bg-terminal-black sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo/Brand -->
+      <a href="/" class="flex items-center space-x-2 no-underline hover:no-underline">
+        <span class="text-terminal-green text-2xl font-bold">$</span>
+        <span class="text-terminal-green text-xl font-bold">
+          The Copilot Stack
+        </span>
+        <span class="text-terminal-green text-2xl animate-pulse">_</span>
+      </a>
+
+      <!-- Navigation -->
+      <Navigation currentPath={currentPath} />
+    </div>
+  </div>
+</header>
+
+<style>
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 1s ease-in-out infinite;
+  }
+</style>

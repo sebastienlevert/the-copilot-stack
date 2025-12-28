@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import BlogList from '../../components/blog/BlogList.astro';
+---
+
+<BaseLayout
+  title="Blog"
+  description="Technical articles and insights about Microsoft Copilot extensibility, development patterns, and best practices."
+>
+  <Header />
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="mb-12">
+      <h1 class="text-5xl font-bold text-terminal-green mb-4 terminal-prompt">
+        Blog
+      </h1>
+      <p class="text-xl text-terminal-greenDim">
+        Technical articles and insights about Microsoft Copilot extensibility, development patterns, and best practices.
+      </p>
+    </div>
+
+    <BlogList />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,98 @@
+---
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const navItems = [
+  { label: 'Home', href: '/', command: 'cd ~' },
+  { label: 'Blog', href: '/blog', command: 'ls blog/' },
+  { label: 'Episodes', href: '/episodes', command: 'ls episodes/' },
+  { label: 'About', href: '/about', command: 'cat about.txt' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') {
+    return currentPath === '/';
+  }
+  return currentPath.startsWith(href);
+}
+---
+
+<nav class="hidden md:block">
+  <ul class="flex space-x-6">
+    {navItems.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          class={`
+            flex items-center space-x-2 no-underline hover:no-underline
+            transition-colors duration-200
+            ${isActive(item.href)
+              ? 'text-terminal-green'
+              : 'text-terminal-greenDim hover:text-terminal-green'
+            }
+          `}
+          aria-label={item.label}
+          title={item.command}
+        >
+          <span class="text-sm">{item.command}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<!-- Mobile Navigation -->
+<nav class="md:hidden">
+  <button
+    id="mobile-menu-button"
+    class="text-terminal-green hover:text-terminal-greenDim transition-colors"
+    aria-label="Toggle menu"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</nav>
+
+<div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-terminal-black border-b border-terminal-greenDim">
+  <ul class="container mx-auto px-4 py-4 space-y-3">
+    {navItems.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          class={`
+            block no-underline hover:no-underline
+            transition-colors duration-200
+            ${isActive(item.href)
+              ? 'text-terminal-green'
+              : 'text-terminal-greenDim hover:text-terminal-green'
+            }
+          `}
+        >
+          <span class="terminal-prompt">{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  // Mobile menu toggle
+  const menuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!menuButton?.contains(target) && !mobileMenu?.contains(target)) {
+      mobileMenu?.classList.add('hidden');
+    }
+  });
+</script>

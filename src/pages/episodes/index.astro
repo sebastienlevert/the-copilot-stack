@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import EpisodeList from '../../components/episodes/EpisodeList.astro';
+---
+
+<BaseLayout
+  title="Episodes"
+  description="Watch and listen to The Copilot Stack podcast episodes featuring deep dives into Microsoft Copilot extensibility."
+>
+  <Header />
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="mb-12">
+      <h1 class="text-5xl font-bold text-terminal-green mb-4 terminal-prompt">
+        Episodes
+      </h1>
+      <p class="text-xl text-terminal-greenDim">
+        Watch and listen to deep dives into Microsoft Copilot extensibility. Available on YouTube, Spotify, and Apple Music.
+      </p>
+    </div>
+
+    <EpisodeList />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+// Search bar component for Pagefind integration
+---
+
+<div class="search-container">
+  <div id="search" class="pagefind-ui"></div>
+</div>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" is:inline />
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof window !== 'undefined' && window.PagefindUI) {
+      new window.PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+        excerptLength: 15,
+        resetStyles: false,
+        translations: {
+          placeholder: 'Search The Copilot Stack...',
+        },
+      });
+
+      // Apply terminal theme styles to Pagefind
+      const style = document.createElement('style');
+      style.textContent = `
+        .pagefind-ui__search-input {
+          background-color: #1a1a1a !important;
+          color: #00FF00 !important;
+          border: 1px solid #00AA00 !important;
+          font-family: 'JetBrains Mono', monospace !important;
+        }
+
+        .pagefind-ui__search-input::placeholder {
+          color: #00AA00 !important;
+        }
+
+        .pagefind-ui__result {
+          background-color: #1a1a1a !important;
+          border: 1px solid #00AA00 !important;
+          border-radius: 0.5rem !important;
+          padding: 1rem !important;
+          margin-bottom: 1rem !important;
+        }
+
+        .pagefind-ui__result:hover {
+          border-color: #00FF00 !important;
+        }
+
+        .pagefind-ui__result-title {
+          color: #00FF00 !important;
+          font-weight: bold !important;
+        }
+
+        .pagefind-ui__result-excerpt {
+          color: #C5C5C5 !important;
+        }
+
+        .pagefind-ui__message {
+          color: #00AA00 !important;
+        }
+
+        .pagefind-ui__button {
+          background-color: #00FF00 !important;
+          color: #0a0a0a !important;
+          font-weight: bold !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  });
+</script>
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+
+<style>
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+</style>

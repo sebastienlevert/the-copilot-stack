@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { getCollection } from 'astro:content';
+import BlogCard from '../components/blog/BlogCard.astro';
+import EpisodeCard from '../components/episodes/EpisodeCard.astro';
+
+// Get latest blog posts (limit 3)
+const allBlogPosts = await getCollection('blog', ({ data }) => !data.draft);
+const latestPosts = allBlogPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Get latest episodes (limit 3)
+const allEpisodes = await getCollection('episodes', ({ data }) => !data.draft);
+const latestEpisodes = allEpisodes
+  .sort((a, b) => b.data.episodeNumber - a.data.episodeNumber)
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Home"
+  description="The Copilot Stack - Your comprehensive resource for Microsoft Copilot extensibility, featuring technical posts, videos, and podcast episodes."
+>
+  <Header />
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="border-b border-terminal-greenDim bg-terminal-black">
+      <div class="container mx-auto px-4 py-16 md:py-24">
+        <div class="max-w-4xl">
+          <h1 class="text-5xl md:text-7xl font-bold text-terminal-green mb-6 terminal-prompt">
+            The Copilot Stack
+          </h1>
+          <p class="text-xl md:text-2xl text-terminal-white mb-8 leading-relaxed">
+            Your comprehensive resource for Microsoft Copilot extensibility.
+            <br />
+            <span class="text-terminal-greenDim">
+              Technical posts • Videos • Podcast episodes
+            </span>
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="/blog" class="btn">
+              Read the Blog
+            </a>
+            <a href="/episodes" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
+              Watch Episodes
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Blog Posts -->
+    {latestPosts.length > 0 && (
+      <section class="container mx-auto px-4 py-16">
+        <div class="mb-8 flex items-center justify-between">
+          <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
+            Latest Posts
+          </h2>
+          <a
+            href="/blog"
+            class="text-terminal-greenDim hover:text-terminal-green transition-colors"
+          >
+            View all →
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {latestPosts.map((post) => (
+            <BlogCard
+              slug={post.slug}
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              content={post.body}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Latest Episodes -->
+    {latestEpisodes.length > 0 && (
+      <section class="container mx-auto px-4 py-16 border-t border-terminal-greenDim">
+        <div class="mb-8 flex items-center justify-between">
+          <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
+            Latest Episodes
+          </h2>
+          <a
+            href="/episodes"
+            class="text-terminal-greenDim hover:text-terminal-green transition-colors"
+          >
+            View all →
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {latestEpisodes.map((episode) => (
+            <EpisodeCard
+              slug={episode.slug}
+              title={episode.data.title}
+              description={episode.data.description}
+              pubDate={episode.data.pubDate}
+              episodeNumber={episode.data.episodeNumber}
+              tags={episode.data.tags}
+              youtubeId={episode.data.youtubeId}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- CTA Section -->
+    <section class="container mx-auto px-4 py-16 border-t border-terminal-greenDim">
+      <div class="card text-center max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-terminal-green mb-4 terminal-prompt">
+          Stay Updated
+        </h2>
+        <p class="text-terminal-white mb-6">
+          Subscribe to our RSS feed to get the latest posts and episodes delivered to your favorite reader.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/rss.xml" class="btn">
+            Subscribe via RSS
+          </a>
+          <a href="https://github.com/sebastienlevert/the-copilot-stack" target="_blank" rel="noopener noreferrer" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

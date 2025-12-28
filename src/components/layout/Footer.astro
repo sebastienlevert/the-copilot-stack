@@ -1,0 +1,92 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-terminal-greenDim mt-auto bg-terminal-black">
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- About -->
+      <div>
+        <h3 class="text-terminal-green font-bold mb-3 terminal-prompt">About</h3>
+        <p class="text-terminal-greenDim text-sm">
+          The Copilot Stack is your go-to resource for Copilot extensibility,
+          featuring technical posts, videos, and podcast episodes.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-terminal-green font-bold mb-3 terminal-prompt">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/blog" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+              Blog
+            </a>
+          </li>
+          <li>
+            <a href="/episodes" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+              Episodes
+            </a>
+          </li>
+          <li>
+            <a href="/about" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+              About
+            </a>
+          </li>
+          <li>
+            <a href="/rss.xml" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+              RSS Feed
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Connect -->
+      <div>
+        <h3 class="text-terminal-green font-bold mb-3 terminal-prompt">Connect</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a
+              href="https://github.com/sebastienlevert/the-copilot-stack"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline"
+            >
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://youtube.com/@sebastienlevert"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline"
+            >
+              YouTube
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://twitter.com/sebastienlevert"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline"
+            >
+              Twitter/X
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-8 pt-6 border-t border-terminal-greenDim text-center text-terminal-greenDim text-sm">
+      <p class="terminal-prompt">
+        {currentYear} The Copilot Stack. All rights reserved.
+      </p>
+      <p class="mt-2 text-xs">
+        Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="text-terminal-green hover:underline">Astro</a>
+      </p>
+    </div>
+  </div>
+</footer>

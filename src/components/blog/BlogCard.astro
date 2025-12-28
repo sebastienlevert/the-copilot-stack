@@ -1,0 +1,53 @@
+---
+import { formatDateShort } from '../../utils/formatDate';
+import { getReadingMinutes } from '../../utils/readingTime';
+import TagList from '../content/TagList.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+  content: string;
+}
+
+const { slug, title, description, pubDate, tags, content } = Astro.props;
+const readingMinutes = getReadingMinutes(content);
+---
+
+<article class="card group">
+  <a href={`/blog/${slug}`} class="no-underline hover:no-underline">
+    <div class="flex flex-col h-full">
+      <div class="flex-grow">
+        <h2 class="text-2xl font-bold text-terminal-green mb-2 group-hover:text-terminal-greenDim transition-colors terminal-prompt">
+          {title}
+        </h2>
+        <p class="text-terminal-white mb-4 line-clamp-3">
+          {description}
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 text-sm text-terminal-greenDim mb-3">
+        <time datetime={pubDate.toISOString()}>
+          {formatDateShort(pubDate)}
+        </time>
+        <span>•</span>
+        <span>{readingMinutes} min read</span>
+      </div>
+      {tags.length > 0 && (
+        <div class="mt-auto">
+          <TagList tags={tags} />
+        </div>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
