@@ -1,5 +1,6 @@
 ---
 const currentYear = new Date().getFullYear();
+const base = import.meta.env.BASE_URL;
 ---
 
 <footer class="border-t border-terminal-greenDim mt-auto bg-terminal-black">
@@ -19,22 +20,22 @@ const currentYear = new Date().getFullYear();
         <h3 class="text-terminal-green font-bold mb-3 terminal-prompt">Quick Links</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/blog" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+            <a href={`${base}blog`} class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
               Blog
             </a>
           </li>
           <li>
-            <a href="/episodes" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+            <a href={`${base}episodes`} class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
               Episodes
             </a>
           </li>
           <li>
-            <a href="/about" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+            <a href={`${base}about`} class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
               About
             </a>
           </li>
           <li>
-            <a href="/rss.xml" class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
+            <a href={`${base}rss.xml`} class="text-terminal-greenDim hover:text-terminal-green no-underline hover:underline">
               RSS Feed
             </a>
           </li>

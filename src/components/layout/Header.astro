@@ -2,13 +2,14 @@
 import Navigation from './Navigation.astro';
 
 const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
 ---
 
 <header class="border-b border-terminal-greenDim bg-terminal-black sticky top-0 z-50">
   <div class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo/Brand -->
-      <a href="/" class="flex items-center space-x-2 no-underline hover:no-underline">
+      <a href={base} class="flex items-center space-x-2 no-underline hover:no-underline">
         <span class="text-terminal-green text-2xl font-bold">$</span>
         <span class="text-terminal-green text-xl font-bold">
           The Copilot Stack

@@ -16,10 +16,11 @@ const { slug, title, description, pubDate, episodeNumber, tags, youtubeId } = As
 const thumbnailUrl = youtubeId
   ? `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`
   : null;
+const base = import.meta.env.BASE_URL;
 ---
 
 <article class="card group">
-  <a href={`/episodes/${slug}`} class="no-underline hover:no-underline">
+  <a href={`${base}episodes/${slug}`} class="no-underline hover:no-underline">
     <div class="flex flex-col h-full">
       {thumbnailUrl && (
         <div class="mb-4 overflow-hidden rounded-lg border border-terminal-greenDim">

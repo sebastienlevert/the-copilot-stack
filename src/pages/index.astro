@@ -6,6 +6,8 @@ import { getCollection } from 'astro:content';
 import BlogCard from '../components/blog/BlogCard.astro';
 import EpisodeCard from '../components/episodes/EpisodeCard.astro';
 
+const base = import.meta.env.BASE_URL;
+
 // Get latest blog posts (limit 3)
 const allBlogPosts = await getCollection('blog', ({ data }) => !data.draft);
 const latestPosts = allBlogPosts
@@ -40,10 +42,10 @@ const latestEpisodes = allEpisodes
             </span>
           </p>
           <div class="flex flex-wrap gap-4">
-            <a href="/blog" class="btn">
+            <a href={`${base}blog`} class="btn">
               Read the Blog
             </a>
-            <a href="/episodes" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
+            <a href={`${base}episodes`} class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
               Watch Episodes
             </a>
           </div>
@@ -59,7 +61,7 @@ const latestEpisodes = allEpisodes
             Latest Posts
           </h2>
           <a
-            href="/blog"
+            href={`${base}blog`}
             class="text-terminal-greenDim hover:text-terminal-green transition-colors"
           >
             View all →
@@ -88,7 +90,7 @@ const latestEpisodes = allEpisodes
             Latest Episodes
           </h2>
           <a
-            href="/episodes"
+            href={`${base}episodes`}
             class="text-terminal-greenDim hover:text-terminal-green transition-colors"
           >
             View all →
@@ -120,7 +122,7 @@ const latestEpisodes = allEpisodes
           Subscribe to our RSS feed to get the latest posts and episodes delivered to your favorite reader.
         </p>
         <div class="flex flex-wrap gap-4 justify-center">
-          <a href="/rss.xml" class="btn">
+          <a href={`${base}rss.xml`} class="btn">
             Subscribe via RSS
           </a>
           <a href="https://github.com/sebastienlevert/the-copilot-stack" target="_blank" rel="noopener noreferrer" class="btn bg-terminal-gray border border-terminal-greenDim text-terminal-green hover:bg-terminal-greenDim hover:text-terminal-black">
