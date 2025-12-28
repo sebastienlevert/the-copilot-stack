@@ -12,7 +12,7 @@ const base = import.meta.env.BASE_URL;
   {tags.map((tag) => (
     linkable ? (
       <a
-        href={`${base}blog?tag=${encodeURIComponent(tag)}`}
+        href={`${base}/blog?tag=${encodeURIComponent(tag)}`}
         class="tag no-underline hover:bg-terminal-green hover:text-terminal-black"
       >
         #{tag}
