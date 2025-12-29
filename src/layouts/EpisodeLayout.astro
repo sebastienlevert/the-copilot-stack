@@ -28,9 +28,10 @@ const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, apple
 
 <BaseLayout title={`Episode ${episodeNumber}: ${title}`} description={description} image={ogImage}>
   <Header />
-  <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
-    <article>
-      <header class="mb-8 border-b border-terminal-greenDim pb-6">
+  <main class="flex-grow">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+      <article>
+        <header class="mb-8 pb-6">
         <div class="text-terminal-greenDim text-sm mb-2">
           EPISODE {episodeNumber.toString().padStart(3, '0')}
         </div>
@@ -47,7 +48,13 @@ const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, apple
             <TagList tags={tags} linkable={true} />
           </div>
         )}
-      </header>
+        </header>
+      </article>
+    </div>
+
+    <div class="border-t border-terminal-greenDim">
+      <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <article>
 
       <!-- Video Embed -->
       {youtubeId && (
@@ -82,10 +89,11 @@ const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, apple
       <div class="prose prose-invert max-w-none">
         <h2 class="text-2xl font-bold text-terminal-green mb-4">Show Notes</h2>
         <div class="prose-content">
-          <slot />
-        </div>
+            <slot />
+          </div>
+        </article>
       </div>
-    </article>
+    </div>
   </main>
   <Footer />
   <CopyCodeButton />

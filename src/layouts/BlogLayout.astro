@@ -29,9 +29,10 @@ const author = getAuthor(authorSlug) || { name: authorSlug, slug: authorSlug }; 
 
 <BaseLayout title={title} description={description} image={coverImage} article={true}>
   <Header />
-  <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
-    <article class="prose prose-invert max-w-none">
-      <header class="mb-8 border-b border-terminal-greenDim pb-6">
+  <main class="flex-grow">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <article class="prose prose-invert max-w-none">
+        <header class="mb-8 pb-6">
         <h1 class="text-2xl md:text-3xl font-bold text-terminal-green mb-4">
           {title}
         </h1>
@@ -49,11 +50,18 @@ const author = getAuthor(authorSlug) || { name: authorSlug, slug: authorSlug }; 
             <TagList tags={tags} linkable={true} />
           </div>
         )}
-      </header>
-      <div class="prose-content">
-        <slot />
+        </header>
+      </article>
+    </div>
+    <div class="border-t border-terminal-greenDim">
+      <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <article class="prose prose-invert max-w-none">
+          <div class="prose-content">
+            <slot />
+          </div>
+        </article>
       </div>
-    </article>
+    </div>
   </main>
   <Footer />
   <CopyCodeButton />

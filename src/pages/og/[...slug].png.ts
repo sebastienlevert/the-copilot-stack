@@ -14,7 +14,7 @@ export async function getStaticPaths() {
       params: { slug: `blog/${post.slug}` },
       props: {
         title: post.data.title,
-        description: post.data.description,
+        pubDate: post.data.pubDate,
         type: 'blog',
       },
     })),
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
       params: { slug: `episodes/${episode.slug}` },
       props: {
         title: episode.data.title,
-        description: episode.data.description,
+        pubDate: episode.data.pubDate,
         type: 'episode',
       },
     })),
@@ -30,11 +30,18 @@ export async function getStaticPaths() {
 }
 
 export const GET: APIRoute = async ({ props }) => {
-  const { title, description, type } = props as {
+  const { title, pubDate, type } = props as {
     title: string;
-    description: string;
+    pubDate: Date;
     type: 'blog' | 'episode';
   };
+
+  // Format date
+  const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   // Load JetBrains Mono font for satori
   const fontPath = join(
@@ -79,7 +86,7 @@ export const GET: APIRoute = async ({ props }) => {
                       color: '#00FF00',
                       marginRight: '20px',
                     },
-                    children: '$',
+                    children: '>',
                   },
                 },
                 {
@@ -103,7 +110,7 @@ export const GET: APIRoute = async ({ props }) => {
                 fontSize: '64px',
                 color: '#00FF00',
                 fontWeight: 'bold',
-                marginBottom: '30px',
+                marginBottom: '40px',
                 lineHeight: 1.2,
               },
               children: title,
@@ -113,36 +120,13 @@ export const GET: APIRoute = async ({ props }) => {
             type: 'div',
             props: {
               style: {
-                fontSize: '32px',
-                color: '#00AA00',
-                lineHeight: 1.4,
-                marginBottom: '40px',
-              },
-              children: description,
-            },
-          },
-          {
-            type: 'div',
-            props: {
-              style: {
                 display: 'flex',
                 alignItems: 'center',
                 marginTop: 'auto',
+                fontSize: '28px',
+                color: '#00AA00',
               },
-              children: [
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      fontSize: '24px',
-                      color: '#00AA00',
-                      textTransform: 'uppercase',
-                      letterSpacing: '2px',
-                    },
-                    children: type === 'blog' ? '📝 Blog Post' : '🎬 Episode',
-                  },
-                },
-              ],
+              children: formattedDate,
             },
           },
         ],

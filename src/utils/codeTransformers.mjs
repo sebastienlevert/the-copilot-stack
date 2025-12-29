@@ -1,11 +1,15 @@
 /**
- * Custom Shiki transformers for line numbers, highlighting, and diffs
+ * Custom Shiki transformers for highlighting, diffs, and line numbers
  */
 
 export function customTransformers() {
   return [
     {
-      name: 'custom-line-classes',
+      name: 'custom-features',
+      // Pre hook disabled - line numbers feature removed
+      // pre(node) {
+      //   // Line numbers feature disabled
+      // },
       line(node, line) {
         const classes = ['line'];
 
@@ -34,13 +38,6 @@ export function customTransformers() {
         }
 
         node.properties.className = classes;
-      },
-      pre(node) {
-        // Add data attribute for line numbers based on code fence meta
-        const meta = this.options.meta?.__raw || '';
-        if (meta.includes('showLineNumbers')) {
-          node.properties['data-line-numbers'] = 'true';
-        }
       },
     },
   ];

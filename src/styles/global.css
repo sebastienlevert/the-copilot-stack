@@ -1,7 +1,6 @@
 @import '@fontsource/jetbrains-mono/400.css';
 @import '@fontsource/jetbrains-mono/700.css';
 @import './code.css';
-@import './search.css';
 
 @tailwind base;
 @tailwind components;
@@ -46,23 +45,6 @@
   /* Code blocks */
   pre {
     @apply bg-terminal-gray rounded-lg p-4 overflow-x-auto border border-terminal-greenDim;
-  }
-
-  /* Code blocks with line numbers */
-  pre[data-line-numbers="true"] {
-    counter-reset: line;
-    @apply pl-2;
-  }
-
-  pre[data-line-numbers="true"] .line {
-    counter-increment: line;
-    @apply pl-10 relative;
-  }
-
-  pre[data-line-numbers="true"] .line::before {
-    content: counter(line);
-    @apply absolute left-0 text-terminal-greenDim text-right pr-4 select-none;
-    width: 2.5rem;
   }
 
   code {

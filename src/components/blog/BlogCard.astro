@@ -10,9 +10,10 @@ interface Props {
   pubDate: Date;
   tags: string[];
   content: string;
+  ogImage?: string;
 }
 
-const { slug, title, description, pubDate, tags, content } = Astro.props;
+const { slug, title, description, pubDate, tags, content, ogImage } = Astro.props;
 const readingMinutes = getReadingMinutes(content);
 const base = import.meta.env.BASE_URL;
 ---
@@ -20,8 +21,17 @@ const base = import.meta.env.BASE_URL;
 <article class="card group">
   <a href={`${base}/blog/${slug}`} class="no-underline hover:no-underline">
     <div class="flex flex-col h-full">
+      {ogImage && (
+        <div class="mb-4 overflow-hidden rounded-lg border border-terminal-greenDim">
+          <img
+            src={ogImage}
+            alt={title}
+            class="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
       <div class="flex-grow">
-        <h2 class="text-lg font-bold text-terminal-green mb-2 group-hover:text-terminal-greenDim transition-colors terminal-prompt">
+        <h2 class="text-lg font-bold text-terminal-green mb-2 group-hover:text-terminal-greenDim transition-colors">
           {title}
         </h2>
         <p class="text-terminal-white mb-4 line-clamp-3">

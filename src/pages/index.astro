@@ -53,68 +53,91 @@ const latestEpisodes = allEpisodes
       </div>
     </section>
 
-    <!-- Latest Blog Posts -->
-    {latestPosts.length > 0 && (
-      <section class="container mx-auto px-4 py-16">
-        <div class="mb-8 flex items-center justify-between">
-          <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
-            Latest Posts
-          </h2>
-          <a
-            href={`${base}/blog`}
-            class="text-terminal-greenDim hover:text-terminal-green transition-colors"
-          >
-            View all →
-          </a>
+    <!-- Latest Content Section -->
+    <section class="container mx-auto px-4 py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Latest Blog Posts -->
+        <div>
+          <div class="mb-8 flex items-center justify-between">
+            <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
+              Latest Post
+            </h2>
+            <a
+              href={`${base}/blog`}
+              class="text-terminal-greenDim hover:text-terminal-green transition-colors"
+            >
+              View all →
+            </a>
+          </div>
+          <div>
+            {latestPosts.length > 0 ? (
+              <BlogCard
+                slug={latestPosts[0].slug}
+                title={latestPosts[0].data.title}
+                description={latestPosts[0].data.description}
+                pubDate={latestPosts[0].data.pubDate}
+                tags={latestPosts[0].data.tags}
+                content={latestPosts[0].body}
+                ogImage={`${base}/og/blog/${latestPosts[0].slug}.png`}
+              />
+            ) : (
+              <article class="card">
+                <div class="flex flex-col h-full justify-center items-center py-12">
+                  <span class="text-6xl text-terminal-greenDim mb-4">📝</span>
+                  <h3 class="text-xl font-bold text-terminal-green mb-2">Coming Soon</h3>
+                  <p class="text-terminal-greenDim text-center">
+                    New blog posts are on the way. Check back soon for technical insights and tutorials.
+                  </p>
+                </div>
+              </article>
+            )}
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {latestPosts.map((post) => (
-            <BlogCard
-              slug={post.slug}
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              tags={post.data.tags}
-              content={post.body}
-            />
-          ))}
-        </div>
-      </section>
-    )}
 
-    <!-- Latest Episodes -->
-    {latestEpisodes.length > 0 && (
-      <section class="container mx-auto px-4 py-16 border-t border-terminal-greenDim">
-        <div class="mb-8 flex items-center justify-between">
-          <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
-            Latest Episodes
-          </h2>
-          <a
-            href={`${base}/episodes`}
-            class="text-terminal-greenDim hover:text-terminal-green transition-colors"
-          >
-            View all →
-          </a>
+        <!-- Latest Episodes -->
+        <div>
+          <div class="mb-8 flex items-center justify-between">
+            <h2 class="text-3xl md:text-4xl font-bold text-terminal-green terminal-prompt">
+              Latest Episode
+            </h2>
+            <a
+              href={`${base}/episodes`}
+              class="text-terminal-greenDim hover:text-terminal-green transition-colors"
+            >
+              View all →
+            </a>
+          </div>
+          <div>
+            {latestEpisodes.length > 0 ? (
+              <EpisodeCard
+                slug={latestEpisodes[0].slug}
+                title={latestEpisodes[0].data.title}
+                description={latestEpisodes[0].data.description}
+                pubDate={latestEpisodes[0].data.pubDate}
+                episodeNumber={latestEpisodes[0].data.episodeNumber}
+                tags={latestEpisodes[0].data.tags}
+                youtubeId={latestEpisodes[0].data.youtubeId}
+              />
+            ) : (
+              <article class="card">
+                <div class="flex flex-col h-full justify-center items-center py-12">
+                  <span class="text-6xl text-terminal-greenDim mb-4">🎥</span>
+                  <h3 class="text-xl font-bold text-terminal-green mb-2">Coming Soon</h3>
+                  <p class="text-terminal-greenDim text-center">
+                    Video episodes are coming soon. Subscribe to stay updated when they launch.
+                  </p>
+                </div>
+              </article>
+            )}
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {latestEpisodes.map((episode) => (
-            <EpisodeCard
-              slug={episode.slug}
-              title={episode.data.title}
-              description={episode.data.description}
-              pubDate={episode.data.pubDate}
-              episodeNumber={episode.data.episodeNumber}
-              tags={episode.data.tags}
-              youtubeId={episode.data.youtubeId}
-            />
-          ))}
-        </div>
-      </section>
-    )}
+      </div>
+    </section>
 
     <!-- CTA Section -->
-    <section class="container mx-auto px-4 py-16 border-t border-terminal-greenDim">
-      <div class="card text-center max-w-2xl mx-auto">
+    <section class="border-t border-terminal-greenDim">
+      <div class="container mx-auto px-4 py-16">
+        <div class="card text-center max-w-2xl mx-auto">
         <h2 class="text-3xl font-bold text-terminal-green mb-4 terminal-prompt">
           Stay Updated
         </h2>
@@ -129,6 +152,7 @@ const latestEpisodes = allEpisodes
             Star on GitHub
           </a>
         </div>
+      </div>
       </div>
     </section>
   </main>

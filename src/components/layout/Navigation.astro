@@ -22,25 +22,30 @@ function isActive(href: string): boolean {
 ---
 
 <nav class="hidden md:block">
-  <ul class="flex space-x-6">
-    {navItems.map((item) => (
-      <li>
-        <a
-          href={item.href}
-          class={`
-            flex items-center space-x-2 no-underline hover:no-underline
-            transition-colors duration-200
-            ${isActive(item.href)
-              ? 'text-terminal-green'
-              : 'text-terminal-greenDim hover:text-terminal-green'
-            }
-          `}
-          aria-label={item.label}
-          title={item.command}
-        >
-          <span class="text-sm">{item.command}</span>
-        </a>
-      </li>
+  <ul class="flex items-center space-x-3 list-none">
+    <li class="text-terminal-greenDim text-sm" aria-hidden="true">></li>
+    {navItems.map((item, index) => (
+      <>
+        <li>
+          <a
+            href={item.href}
+            class={`
+              no-underline hover:no-underline
+              transition-colors duration-200
+              ${isActive(item.href)
+                ? 'text-terminal-green'
+                : 'text-terminal-greenDim hover:text-terminal-green'
+              }
+            `}
+            aria-label={item.label}
+          >
+            <span class="text-sm">{item.label}</span>
+          </a>
+        </li>
+        {index < navItems.length - 1 && (
+          <li class="text-terminal-greenDim text-sm" aria-hidden="true">></li>
+        )}
+      </>
     ))}
   </ul>
 </nav>

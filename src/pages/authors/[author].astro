@@ -36,8 +36,9 @@ const { author, posts } = Astro.props;
   description={`All blog posts by ${author.name} on The Copilot Stack`}
 >
   <Header />
-  <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
-    <div class="mb-12 border-b border-terminal-greenDim pb-8">
+  <main class="flex-grow">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <div class="mb-12 pb-8">
       <div class="text-terminal-greenDim text-sm mb-2">
         AUTHOR
       </div>
@@ -109,12 +110,15 @@ const { author, posts } = Astro.props;
         )}
       </div>
 
-      <div class="mt-6 text-terminal-greenDim text-sm">
-        {posts.length} {posts.length === 1 ? 'post' : 'posts'} published
+        <div class="mt-6 text-terminal-greenDim text-sm">
+          {posts.length} {posts.length === 1 ? 'post' : 'posts'} published
+        </div>
       </div>
     </div>
 
-    {posts.length > 0 ? (
+    <div class="border-t border-terminal-greenDim">
+      <div class="container mx-auto px-4 py-8 max-w-6xl">
+        {posts.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post) => (
           <BlogCard
@@ -128,12 +132,14 @@ const { author, posts } = Astro.props;
         ))}
       </div>
     ) : (
-      <div class="text-center py-12">
-        <p class="text-terminal-greenDim text-lg">
-          No posts found for this author.
-        </p>
+          <div class="text-center py-12">
+            <p class="text-terminal-greenDim text-lg">
+              No posts found for this author.
+            </p>
+          </div>
+        )}
       </div>
-    )}
+    </div>
   </main>
   <Footer />
 </BaseLayout>

@@ -19,6 +19,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkAdmonitions],
+    rehypePlugins: [],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
