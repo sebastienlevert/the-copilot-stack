@@ -52,10 +52,16 @@ jobs:
           BASE_PATH: /the-copilot-stack
           PUBLIC_CLARITY_ID: ${{ secrets.PUBLIC_CLARITY_ID }}
 
-      - name: Move production build to site directory
+      - name: Prepare site directory
         run: |
+          echo "Contents of current directory:"
+          ls -la
+          echo "Contents of dist directory:"
+          ls -la dist/
           mkdir -p site
-          mv dist/* site/
+          cp -r dist/* site/
+          echo "Contents of site directory:"
+          ls -la site/
 
       - name: Build PR previews
         if: steps.open-prs.outputs.prs != ''
@@ -78,7 +84,7 @@ jobs:
 
             # Move to preview directory
             mkdir -p site/preview/pr-$pr
-            mv dist/* site/preview/pr-$pr/
+            cp -r dist/* site/preview/pr-$pr/
 
             # Return to main branch
             git checkout main
