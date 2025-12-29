@@ -54,14 +54,8 @@ jobs:
 
       - name: Prepare site directory
         run: |
-          echo "Contents of current directory:"
-          ls -la
-          echo "Contents of dist directory:"
-          ls -la dist/
-          mkdir -p site
-          cp -r dist/* site/
-          echo "Contents of site directory:"
-          ls -la site/
+          mkdir -p /tmp/site
+          cp -r dist/* /tmp/site/
 
       - name: Build PR previews
         if: steps.open-prs.outputs.prs != ''
@@ -83,13 +77,18 @@ jobs:
             npm run build
 
             # Move to preview directory
-            mkdir -p site/preview/pr-$pr
-            cp -r dist/* site/preview/pr-$pr/
+            mkdir -p /tmp/site/preview/pr-$pr
+            cp -r dist/* /tmp/site/preview/pr-$pr/
 
             # Return to main branch
             git checkout main
             git clean -fd
           done
+
+      - name: Copy site to workspace
+        run: |
+          mkdir -p site
+          cp -r /tmp/site/* site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
