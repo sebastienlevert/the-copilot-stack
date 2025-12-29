@@ -43,7 +43,7 @@ const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, apple
         </div>
         {tags.length > 0 && (
           <div class="mt-4">
-            <TagList tags={tags} />
+            <TagList tags={tags} linkable={true} />
           </div>
         )}
       </header>

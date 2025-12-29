@@ -1,0 +1,112 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import EpisodeCard from '../../components/episodes/EpisodeCard.astro';
+
+export async function getStaticPaths() {
+  const allBlogPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const allEpisodes = await getCollection('episodes', ({ data }) => !data.draft);
+
+  // Get all unique tags from both collections
+  const allTags = new Set<string>();
+
+  allBlogPosts.forEach((post) => {
+    post.data.tags.forEach((tag: string) => allTags.add(tag));
+  });
+
+  allEpisodes.forEach((episode) => {
+    episode.data.tags.forEach((tag: string) => allTags.add(tag));
+  });
+
+  // Create a page for each tag
+  return Array.from(allTags).map((tag) => {
+    const filteredBlogPosts = allBlogPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
+    const filteredEpisodes = allEpisodes.filter((episode) =>
+      episode.data.tags.includes(tag)
+    );
+
+    return {
+      params: { tag },
+      props: {
+        tag,
+        blogPosts: filteredBlogPosts,
+        episodes: filteredEpisodes,
+      },
+    };
+  });
+}
+
+const { tag, blogPosts, episodes } = Astro.props;
+const totalItems = blogPosts.length + episodes.length;
+
+// Sort all items by date
+const allItems = [
+  ...blogPosts.map((post) => ({ ...post, type: 'blog' as const })),
+  ...episodes.map((episode) => ({ ...episode, type: 'episode' as const })),
+].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`Tag: ${tag}`}
+  description={`All content tagged with "${tag}" on The Copilot Stack`}
+>
+  <Header />
+  <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+    <div class="mb-8">
+      <div class="text-terminal-greenDim text-sm mb-2">
+        TAG
+      </div>
+      <h1 class="text-5xl font-bold text-terminal-green mb-4 terminal-prompt">
+        {tag}
+      </h1>
+      <p class="text-terminal-greenDim">
+        {totalItems} {totalItems === 1 ? 'item' : 'items'} tagged with "{tag}"
+      </p>
+    </div>
+
+    {allItems.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {allItems.map((item) => (
+          item.type === 'blog' ? (
+            <BlogCard
+              slug={item.slug}
+              title={item.data.title}
+              description={item.data.description}
+              pubDate={item.data.pubDate}
+              tags={item.data.tags}
+              content={item.body}
+            />
+          ) : (
+            <EpisodeCard
+              slug={item.slug}
+              title={item.data.title}
+              description={item.data.description}
+              pubDate={item.data.pubDate}
+              episodeNumber={item.data.episodeNumber}
+              tags={item.data.tags}
+            />
+          )
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-terminal-greenDim text-lg">
+          No content found for this tag.
+        </p>
+      </div>
+    )}
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .terminal-prompt::before {
+    content: '$ ';
+    color: var(--terminal-greenDim);
+  }
+</style>

@@ -21,6 +21,7 @@ interface Props {
 
 const { title, description, pubDate, author, tags, coverImage, content } = Astro.props;
 const readingTime = getReadingTime(content);
+const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title={title} description={description} image={coverImage} article={true}>
@@ -36,13 +37,13 @@ const readingTime = getReadingTime(content);
             {formatDate(pubDate)}
           </time>
           <span>•</span>
-          <span>by {author}</span>
+          <span>by <a href={`${base}/authors/${encodeURIComponent(author)}`} class="text-terminal-green hover:text-terminal-greenDim transition-colors duration-200 underline">{author}</a></span>
           <span>•</span>
           <ReadingTime readingTime={readingTime} />
         </div>
         {tags.length > 0 && (
           <div class="mt-4">
-            <TagList tags={tags} />
+            <TagList tags={tags} linkable={true} />
           </div>
         )}
       </header>
