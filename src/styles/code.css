@@ -15,15 +15,15 @@
   counter-increment: line;
   display: grid;
   grid-template-columns: auto 1fr;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 .prose-content pre code .line::before {
   content: counter(line);
   display: inline-block;
-  width: 1.5rem;
-  margin-right: 0.75rem;
+  width: 1rem;
+  margin-right: 0.5rem;
   text-align: right;
   color: var(--terminal-greenDim);
   opacity: 0.5;
@@ -35,7 +35,7 @@
 .prose-content pre code .line.highlighted {
   background-color: rgba(0, 255, 0, 0.1);
   border-left: 3px solid var(--terminal-green);
-  padding-left: calc(0.5rem - 3px);
+  padding-left: calc(0.25rem - 3px);
 }
 
 /* Diff indicators */
@@ -60,5 +60,5 @@
 
 /* Ensure proper spacing for code within lines */
 .prose-content pre code .line > span {
-  padding-left: 0.25rem;
+  padding-left: 0;
 }
