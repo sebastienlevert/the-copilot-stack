@@ -59,15 +59,15 @@ jobs:
             const previewUrl = `https://sebastienlevert.github.io/the-copilot-stack/pr/${prNumber}/`;
 
             const body = `## 🚀 Preview Deployment
-
-Your preview build is ready!
-
-**Preview URL:** ${previewUrl}
-
-This preview will be updated automatically when you push new commits to this PR.
-
----
-*Built with commit ${context.sha.substring(0, 7)}*`;
+            
+            Your preview build is ready!
+            
+            **Preview URL:** ${previewUrl}
+            
+            This preview will be updated automatically when you push new commits to this PR.
+            
+            ---
+            *Built with commit ${context.sha.substring(0, 7)}*`;
 
             // Find existing preview comment
             const comments = await github.rest.issues.listComments({

@@ -38,7 +38,7 @@ jobs:
 
             const body = `## 🧹 Preview Cleanup
 
-The preview deployment for this PR has been removed.`;
+            The preview deployment for this PR has been removed.`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
