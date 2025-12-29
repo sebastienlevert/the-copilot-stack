@@ -5,6 +5,7 @@ import Footer from '../components/layout/Footer.astro';
 import ReadingTime from '../components/content/ReadingTime.astro';
 import TagList from '../components/content/TagList.astro';
 import CopyCodeButton from '../components/ui/CopyCodeButton.astro';
+import HeadingAnchor from '../components/ui/HeadingAnchor.astro';
 import { formatDate } from '../utils/formatDate';
 import { getReadingTime } from '../utils/readingTime';
 
@@ -52,6 +53,7 @@ const readingTime = getReadingTime(content);
   </main>
   <Footer />
   <CopyCodeButton />
+  <HeadingAnchor />
 </BaseLayout>
 
 <style>

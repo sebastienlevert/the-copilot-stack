@@ -1,0 +1,130 @@
+---
+// Component to add copyable anchor links to headings
+---
+
+<script>
+  function setupHeadingAnchors() {
+    // Find all headings with IDs in the prose content
+    const headings = document.querySelectorAll(
+      '.prose-content h2[id], .prose-content h3[id], .prose-content h4[id], .prose-content h5[id], .prose-content h6[id]'
+    );
+
+    headings.forEach((heading) => {
+      // Skip if already processed
+      if (heading.querySelector('.heading-anchor')) return;
+
+      const id = heading.getAttribute('id');
+      if (!id) return;
+
+      // Create anchor link wrapper
+      const anchorWrapper = document.createElement('span');
+      anchorWrapper.className = 'heading-anchor-wrapper';
+
+      // Create anchor link button
+      const anchor = document.createElement('button');
+      anchor.className = 'heading-anchor';
+      anchor.setAttribute('aria-label', 'Copy link to section');
+      anchor.setAttribute('title', 'Copy link to section');
+
+      // Link icon SVG
+      anchor.innerHTML = `
+        <svg class="anchor-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      `;
+
+      // Copy functionality
+      anchor.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const url = `${window.location.origin}${window.location.pathname}#${id}`;
+
+        try {
+          await navigator.clipboard.writeText(url);
+
+          // Show success state
+          anchor.classList.add('copied');
+
+          // Reset after 2 seconds
+          setTimeout(() => {
+            anchor.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy link:', err);
+        }
+      });
+
+      anchorWrapper.appendChild(anchor);
+      heading.appendChild(anchorWrapper);
+    });
+  }
+
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', setupHeadingAnchors);
+
+  // Run after view transitions (if enabled in the future)
+  document.addEventListener('astro:page-load', setupHeadingAnchors);
+</script>
+
+<style>
+  :global(.heading-anchor-wrapper) {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.5rem;
+  }
+
+  :global(.heading-anchor) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--terminal-greenDim);
+    cursor: pointer;
+    padding: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    vertical-align: middle;
+  }
+
+  :global(.prose-content h2:hover .heading-anchor),
+  :global(.prose-content h3:hover .heading-anchor),
+  :global(.prose-content h4:hover .heading-anchor),
+  :global(.prose-content h5:hover .heading-anchor),
+  :global(.prose-content h6:hover .heading-anchor),
+  :global(.heading-anchor:focus) {
+    opacity: 1;
+  }
+
+  :global(.heading-anchor:hover) {
+    color: var(--terminal-green);
+  }
+
+  :global(.heading-anchor .check-icon) {
+    display: none;
+  }
+
+  :global(.heading-anchor.copied .anchor-icon) {
+    display: none;
+  }
+
+  :global(.heading-anchor.copied .check-icon) {
+    display: block;
+    color: var(--terminal-green);
+  }
+
+  /* Mobile: always show anchor links */
+  @media (max-width: 768px) {
+    :global(.heading-anchor) {
+      opacity: 0.6;
+    }
+
+    :global(.heading-anchor:active) {
+      opacity: 1;
+    }
+  }
+</style>
