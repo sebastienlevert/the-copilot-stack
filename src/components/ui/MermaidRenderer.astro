@@ -9,24 +9,108 @@
   // Initialize Mermaid with terminal theme
   mermaid.initialize({
     startOnLoad: false,
-    theme: 'dark',
+    theme: 'base',
+    fontSize: 11,
     themeVariables: {
-      primaryColor: '#00FF00',
-      primaryTextColor: '#00FF00',
+      fontSize: '11px',
+      // Base colors
+      primaryColor: '#1a1a1a',
+      primaryTextColor: '#ffffff',
       primaryBorderColor: '#00AA00',
-      lineColor: '#00AA00',
-      secondaryColor: '#1a1a1a',
+
+      secondaryColor: '#0a0a0a',
+      secondaryTextColor: '#ffffff',
+      secondaryBorderColor: '#00AA00',
+
       tertiaryColor: '#0a0a0a',
+      tertiaryTextColor: '#ffffff',
+      tertiaryBorderColor: '#00AA00',
+
+      // Background and text
       background: '#0a0a0a',
       mainBkg: '#1a1a1a',
       secondBkg: '#0a0a0a',
-      textColor: '#00FF00',
+      textColor: '#ffffff',
+      lineColor: '#00AA00',
+
+      // Borders
       border1: '#00AA00',
       border2: '#00AA00',
+
+      // Node colors
+      nodeBorder: '#00AA00',
+      nodeTextColor: '#ffffff',
+
+      // Class diagram
+      classText: '#ffffff',
+
+      // State diagram
+      labelColor: '#ffffff',
+      labelBackground: '#1a1a1a',
+      labelBoxBorderColor: '#00AA00',
+
+      // Gantt chart
+      sectionBkgColor: '#1a1a1a',
+      sectionBkgColor2: '#0a0a0a',
+      altSectionBkgColor: '#262626',
+      gridColor: '#00AA00',
+      taskBorderColor: '#00AA00',
+      taskBkgColor: '#1a1a1a',
+      activeTaskBorderColor: '#00FF00',
+      activeTaskBkgColor: '#00AA00',
+      doneTaskBkgColor: '#004400',
+      doneTaskBorderColor: '#00AA00',
+      critBkgColor: '#440000',
+      critBorderColor: '#880000',
+      todayLineColor: '#00FF00',
+
+      // Git graph
+      git0: '#00FF00',
+      git1: '#00AA00',
+      git2: '#88FF88',
+      git3: '#44AA44',
+      git4: '#66CC66',
+      git5: '#22CC22',
+      git6: '#00DD00',
+      git7: '#00BB00',
+      gitBranchLabel0: '#ffffff',
+      gitBranchLabel1: '#ffffff',
+      gitBranchLabel2: '#ffffff',
+      gitBranchLabel3: '#ffffff',
+      gitBranchLabel4: '#ffffff',
+      gitBranchLabel5: '#ffffff',
+      gitBranchLabel6: '#ffffff',
+      gitBranchLabel7: '#ffffff',
+      commitLabelColor: '#ffffff',
+      commitLabelBackground: '#1a1a1a',
+
+      // Pie chart
+      pie1: '#00FF00',
+      pie2: '#00AA00',
+      pie3: '#88FF88',
+      pie4: '#44AA44',
+      pie5: '#66CC66',
+      pie6: '#22CC22',
+      pie7: '#00DD00',
+      pie8: '#00BB00',
+      pie9: '#009900',
+      pie10: '#007700',
+      pie11: '#005500',
+      pie12: '#003300',
+      pieTitleTextSize: '13px',
+      pieTitleTextColor: '#00FF00',
+      pieSectionTextSize: '11px',
+      pieSectionTextColor: '#ffffff',
+      pieLegendTextSize: '11px',
+      pieLegendTextColor: '#00FF00',
+      pieStrokeColor: '#0a0a0a',
+      pieStrokeWidth: '2px',
+      pieOpacity: '1',
     },
     flowchart: {
       htmlLabels: true,
       curve: 'basis',
+      fontSize: '11px',
     },
   });
 
@@ -70,11 +154,12 @@
         container.className = 'mermaid-diagram';
         container.style.cssText = `
           padding: 2rem;
-          background: var(--terminal-gray);
-          border: 1px solid var(--terminal-greenDim);
+          background: #1a1a1a;
+          border: 1px solid #00AA00;
           border-radius: 0.5rem;
           margin: 2rem 0;
           overflow-x: auto;
+          position: relative;
         `;
 
         // Generate unique ID for this diagram
@@ -84,8 +169,15 @@
         const { svg } = await mermaid.render(id, code);
         container.innerHTML = svg;
 
-        // Replace the pre element with the rendered diagram
-        pre.replaceWith(container);
+        // Check if pre is wrapped in code-block-wrapper and replace entire wrapper
+        const wrapper = pre.parentElement;
+        if (wrapper && wrapper.classList.contains('code-block-wrapper')) {
+          // Replace the entire wrapper (which includes the copy button)
+          wrapper.replaceWith(container);
+        } else {
+          // Just replace the pre element
+          pre.replaceWith(container);
+        }
       } catch (error) {
         console.error('Failed to render Mermaid diagram:', error);
         // Add visual error indicator
@@ -123,43 +215,269 @@
 </script>
 
 <style is:global>
+  .mermaid-diagram {
+    background: #1a1a1a !important;
+    border: 1px solid #00AA00 !important;
+  }
+
   .mermaid-diagram svg {
     max-width: 100%;
     height: auto;
   }
 
+  /* Force all text to be visible - catch-all rule */
+  .mermaid-diagram svg text {
+    fill: #ffffff !important;
+  }
+
+  .mermaid-diagram svg text[fill="#000"],
+  .mermaid-diagram svg text[fill="black"],
+  .mermaid-diagram svg text[fill="#000000"] {
+    fill: #ffffff !important;
+  }
+
+  /* Flowchart nodes */
   .mermaid-diagram .node rect,
   .mermaid-diagram .node circle,
   .mermaid-diagram .node ellipse,
-  .mermaid-diagram .node polygon {
-    fill: var(--terminal-gray) !important;
-    stroke: var(--terminal-green) !important;
-    stroke-width: 2px;
+  .mermaid-diagram .node polygon,
+  .mermaid-diagram .node path {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+    stroke-width: 2px !important;
   }
 
-  .mermaid-diagram .node .label {
-    color: var(--terminal-green) !important;
-    fill: var(--terminal-green) !important;
+  /* Flowchart notes */
+  .mermaid-diagram .note rect,
+  .mermaid-diagram .note polygon {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+    stroke-width: 2px !important;
   }
 
-  .mermaid-diagram .edgePath .path {
-    stroke: var(--terminal-greenDim) !important;
-    stroke-width: 2px;
+  .mermaid-diagram .note text {
+    fill: #ffffff !important;
+    font-size: 11px !important;
   }
 
-  .mermaid-diagram .edgeLabel {
-    background-color: var(--terminal-black) !important;
-    color: var(--terminal-greenDim) !important;
-  }
-
-  .mermaid-diagram .cluster rect {
-    fill: var(--terminal-black) !important;
-    stroke: var(--terminal-greenDim) !important;
-    stroke-width: 1px;
-  }
-
-  .mermaid-diagram text {
-    fill: var(--terminal-green) !important;
+  /* All text in diagrams */
+  .mermaid-diagram text,
+  .mermaid-diagram .nodeLabel,
+  .mermaid-diagram .label,
+  .mermaid-diagram .node .label,
+  .mermaid-diagram tspan {
+    fill: #ffffff !important;
+    color: #ffffff !important;
     font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+  }
+
+  /* Ensure proper text rendering */
+  .mermaid-diagram .nodeLabel,
+  .mermaid-diagram .label {
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  .mermaid-diagram foreignObject {
+    overflow: visible !important;
+  }
+
+  /* Edge paths */
+  .mermaid-diagram .edgePath .path,
+  .mermaid-diagram .flowchart-link {
+    stroke: #00AA00 !important;
+    stroke-width: 2px !important;
+  }
+
+  /* Edge labels */
+  .mermaid-diagram .edgeLabel,
+  .mermaid-diagram .edgeLabel rect,
+  .mermaid-diagram .edgeLabel span {
+    background-color: #0a0a0a !important;
+    fill: #0a0a0a !important;
+    color: #ffffff !important;
+  }
+
+  .mermaid-diagram .edgeLabel .label {
+    color: #ffffff !important;
+  }
+
+  /* Clusters */
+  .mermaid-diagram .cluster rect {
+    fill: #0a0a0a !important;
+    stroke: #00AA00 !important;
+    stroke-width: 1px !important;
+  }
+
+  .mermaid-diagram .cluster text {
+    fill: #00FF00 !important;
+  }
+
+  /* State diagram */
+  .mermaid-diagram .stateGroup rect {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .state-note rect {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  /* Class diagram */
+  .mermaid-diagram .classGroup rect {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .classLabel .box {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .classLabel .label {
+    fill: #ffffff !important;
+  }
+
+  .mermaid-diagram .divider {
+    stroke: #00AA00 !important;
+  }
+
+  /* Sequence diagram */
+  .mermaid-diagram .actor {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .actor-line {
+    stroke: #00AA00 !important;
+    stroke-width: 2px !important;
+  }
+
+  .mermaid-diagram .actor-man line {
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .messageLine0,
+  .mermaid-diagram .messageLine1 {
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .messageText {
+    fill: #ffffff !important;
+  }
+
+  .mermaid-diagram .labelBox {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .loopText,
+  .mermaid-diagram .loopLine {
+    fill: #ffffff !important;
+    stroke: #00AA00 !important;
+  }
+
+  /* Sequence diagram activation boxes */
+  .mermaid-diagram .activation0,
+  .mermaid-diagram .activation1,
+  .mermaid-diagram .activation2 {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  /* Sequence diagram life lines */
+  .mermaid-diagram line.actor-line {
+    stroke: #00AA00 !important;
+    stroke-width: 2px !important;
+  }
+
+  .mermaid-diagram .sequenceNumber {
+    fill: #ffffff !important;
+  }
+
+  /* Gantt chart */
+  .mermaid-diagram .grid .tick line {
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .grid .tick text {
+    fill: #00FF00 !important;
+  }
+
+  .mermaid-diagram .task {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .taskText,
+  .mermaid-diagram .taskText0,
+  .mermaid-diagram .taskText1,
+  .mermaid-diagram .taskText2,
+  .mermaid-diagram .taskText3 {
+    fill: #ffffff !important;
+  }
+
+  .mermaid-diagram .taskTextOutsideRight,
+  .mermaid-diagram .taskTextOutsideLeft {
+    fill: #00FF00 !important;
+  }
+
+  .mermaid-diagram .section {
+    fill: #00FF00 !important;
+  }
+
+  .mermaid-diagram .sectionTitle {
+    fill: #00FF00 !important;
+  }
+
+  /* ER Diagram */
+  .mermaid-diagram .er.entityBox {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .er.attributeBoxEven,
+  .mermaid-diagram .er.attributeBoxOdd {
+    fill: #1a1a1a !important;
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .er.relationshipLine {
+    stroke: #00AA00 !important;
+  }
+
+  .mermaid-diagram .er.entityLabel {
+    fill: #00FF00 !important;
+  }
+
+  /* Git graph */
+  .mermaid-diagram .commit-id,
+  .mermaid-diagram .commit-msg,
+  .mermaid-diagram .branch-label {
+    fill: #ffffff !important;
+  }
+
+  /* Pie chart */
+  .mermaid-diagram .pieCircle {
+    stroke: #0a0a0a !important;
+  }
+
+  .mermaid-diagram .pieTitleText {
+    fill: #00FF00 !important;
+  }
+
+  .mermaid-diagram .slice {
+    stroke: #0a0a0a !important;
+    stroke-width: 2px !important;
+  }
+
+  .mermaid-diagram .legend text {
+    fill: #00FF00 !important;
+  }
+
+  .mermaid-diagram .legend rect {
+    stroke: #00AA00 !important;
   }
 </style>

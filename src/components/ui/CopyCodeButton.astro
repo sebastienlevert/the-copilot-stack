@@ -11,6 +11,14 @@
       // Skip if already has a copy button
       if (block.querySelector('.copy-button')) return;
 
+      // Skip mermaid code blocks (they will be rendered as diagrams)
+      if (
+        block.classList.contains('language-mermaid') ||
+        block.getAttribute('data-language') === 'mermaid'
+      ) {
+        return;
+      }
+
       // Create copy button
       const button = document.createElement('button');
       button.className = 'copy-button';

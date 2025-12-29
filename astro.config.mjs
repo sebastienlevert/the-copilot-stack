@@ -5,6 +5,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import { remarkAdmonitions } from './src/utils/remarkAdmonitions.mjs';
 import { customTransformers } from './src/utils/codeTransformers.mjs';
+import { rehypeMermaid } from './src/utils/rehypeMermaid.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,7 +20,7 @@ export default defineConfig({
   ],
   markdown: {
     remarkPlugins: [remarkAdmonitions],
-    rehypePlugins: [],
+    rehypePlugins: [rehypeMermaid],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
