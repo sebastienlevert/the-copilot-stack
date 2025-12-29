@@ -1,0 +1,338 @@
+---
+title: 'Building My First M365 Copilot Agent: A TypeScript Developer's Journey'
+description: 'Follow along as I help a TypeScript full-stack developer build their first declarative agent for Microsoft 365 Copilot, from initial confusion to the wow moment when everything just works.'
+pubDate: 2025-12-30
+author: 'sebastienlevert'
+tags: ['copilot', 'declarative-agents', 'typespec', 'tutorial', 'm365']
+draft: false
+---
+
+Last week, I sat down with a TypeScript full-stack developer who was frustrated with their team constantly asking the same GitHub project management questions. They wanted to build an agent for Microsoft 365 Copilot to help, but M365 development was completely new territory. They had all the right skills for modern web development, but this felt like jumping into a different world entirely.
+
+What happened next perfectly captures why I'm so excited about declarative agents and TypeSpec.
+
+The developer's first question caught me off guard, even though I've heard it dozens of times: "Where's the real code?"
+
+Let me walk you through our session together and show you how we went from confusion to a fully working agent in less than an hour.
+
+## The "Where's the Code?" Moment
+
+When you're used to building full-stack applications with TypeScript, Express servers, React frontends, and database layers, the idea of building an AI agent without writing orchestration logic feels wrong. My developer friend kept looking for where they would implement the LLM calls, set up the function calling, configure the RAI policies, or manage the model selection.
+
+"It's mainly configuration," I explained. "You're configuring M365 Copilot to benefit from the power of the platform versus building your own end-to-end platform."
+
+The skeptical look on their face told me I needed visual proof. I pulled up the stack diagram that Microsoft uses at conferences:
+
+![Declarative Agent Architecture](https://devblogs.microsoft.com/microsoft365dev/wp-content/uploads/sites/73/2025/11/DeclarativeAgents.webp)
+
+The diagram shows how declarative agents sit on top of Microsoft's foundation models, orchestrator, and AI safety services—you're configuring the top layer while Microsoft provides all the infrastructure beneath.
+
+I watched their expression shift from skepticism to curiosity. "Wait, so I'm just... configuring the behavior?" they asked. "And Microsoft handles all the model management, the orchestration, the safety guardrails?"
+
+Exactly.
+
+That's when it clicked. [Declarative agents](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-declarative-agent) run on the same orchestrator, foundation models, and trusted AI services that power Microsoft 365 Copilot itself. You're not building the infrastructure. You're customizing how it behaves for your specific use case.
+
+## Getting Started: The Practical Steps
+
+Once we were aligned on the concept, it was time to dive in.
+
+## What We're Building
+
+Before we get into the setup, let me tell you what we decided to build: a GitHub Project Management Helper agent. The goal was simple—when someone asks questions about organizing GitHub issues, structuring project boards, or managing team workflows, the agent would search the web for best practices and provide clear, actionable guidance. One agent to answer all those recurring questions that kept interrupting the team's flow.
+
+Now, here's what we needed before writing any TypeSpec:
+
+**Prerequisites:**
+- A Microsoft 365 tenant with Copilot licenses
+- Node.js 20 or later
+- Visual Studio Code
+- [Microsoft 365 Agents Toolkit extension](https://marketplace.visualstudio.com/items?itemName=TeamsDevApp.ms-teams-vscode-extension)
+
+> [!TIP]
+> The Microsoft 365 Agents Toolkit (previously known as Teams Toolkit) was renamed at Build 2025. If you're looking for the extension, search for "Microsoft 365 Agents Toolkit" in the VS Code marketplace.
+
+### Creating the Project
+
+Here's where we hit our first gotcha. My developer friend opened VS Code, installed the toolkit extension, and immediately started looking for a "Create New Project" button in the Explorer sidebar. They couldn't find it.
+
+"Check the Activity Bar," I said. "You need to open the Agents Toolkit sidebar specifically."
+
+> [!WARNING]
+> My friend wasn't alone in this confusion. Most developers coming from other Microsoft ecosystems hit this same wall. Unlike .NET project templates that show up in the Explorer, the Agents Toolkit has its own dedicated sidebar. Look for the toolkit icon in the Activity Bar (the left-most vertical bar), or use the command palette with Ctrl+Shift+P (Cmd+Shift+P on Mac) and search for "Microsoft 365 Agents Toolkit."
+
+Once we found the right place, creating the project was straightforward:
+
+1. Click "Create a New App" in the Agents Toolkit sidebar
+2. Select "Agent"
+3. Choose "Start with TypeSpec"
+4. Select your target folder
+5. Name your agent
+
+The toolkit scaffolded a complete project structure with all the necessary files, including the main manifest and TypeSpec files that represent the agent configuration.
+
+## Understanding TypeSpec for M365 Copilot
+
+The generated project contained TypeSpec files, which is where [TypeSpec for Microsoft 365 Copilot](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-typespec) shines. TypeSpec is a domain-specific language that provides type safety, rich IntelliSense, and automatic manifest generation for your agents.
+
+Instead of hand-crafting JSON manifests and hoping you got the schema right, you write clean TypeSpec code and let the compiler generate valid manifests. The compiler also catches syntax errors and type violations before deployment, which is a huge time-saver.
+
+"This actually looks familiar," my friend said, scanning the generated files. They were right—TypeSpec's syntax mirrors TypeScript interfaces, which made the transition less jarring than expected.
+
+The initial project structure looked like this:
+
+```
+my-agent/
+├── appPackage/
+│   └── manifest.json           # Auto-generated from TypeSpec
+├── src/
+│   ├── agent.tsp               # Agent configuration (capabilities, name, description)
+│   └── instructions.tsp        # Behavior definition (how the agent responds)
+├── package.json
+└── tsconfig.json
+```
+
+## Adding the WebSearch Capability
+
+To add web search capability, we modified the `agent.tsp` file. The [TypeSpec documentation](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/build-declarative-agents-typespec#add-web-content) shows exactly how to add capabilities, but the IntelliSense in VS Code made it even easier.
+
+As we started typing `@capability`, IntelliSense immediately suggested available options: WebSearch, OneDriveAndSharePoint, GraphicArt, and more. "No need to memorize capability names or check documentation—it's all there," I pointed out.
+
+Here's the key addition to the agent namespace:
+
+```typespec
+import "@microsoft/typespec-m365-copilot";
+
+using Microsoft.M365.Copilot;
+
+@agent
+namespace GitHubProjectHelper {
+  // Enable web search capability
+  @capability(WebSearch)
+  model WebSearchCapability {}
+}
+```
+
+That's it. No API calls to implement. No search result parsing. No rate limiting logic. Just declare that your agent should have web search capability.
+
+My friend stared at the screen. "You're telling me that's literally all I need to write?"
+
+Yes. That's literally it.
+
+## Customizing the Instructions
+
+Next, we opened `instructions.tsp` to customize how the agent behaves. This is where declarative agents really shine. You're not writing code to handle different scenarios—you're writing natural language instructions that guide the AI.
+
+After a few iterations—first too vague, then overly prescriptive—we landed on instructions that struck the right balance. My friend crafted instructions that specified:
+
+- **Tone and Style**: Professional but approachable, focused on best practices
+- **Response Format**: Structured with clear headings, bullet points, and actionable steps
+- **Domain Focus**: GitHub project management, issue organization, and team workflows
+- **Example Conversations**: Sample questions and the kind of responses expected
+
+```typespec
+@instructions("""
+You are a GitHub project management expert who helps teams organize their work effectively.
+
+When responding:
+- Provide specific, actionable advice
+- Use clear headings and bullet points
+- Include links to official GitHub documentation when relevant
+- Keep answers concise but comprehensive
+
+Example questions you excel at:
+- "What's the best way to organize issues in GitHub Projects?"
+- "How should we structure our project boards for a sprint workflow?"
+- "What labels should we use for issue categorization?"
+
+Always prioritize GitHub's official best practices and recent features.
+""")
+```
+
+> [!NOTE]
+> The quality of your instructions directly impacts your agent's behavior. Take time to write clear, specific guidance. Check out [best practices for writing declarative agent instructions](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/declarative-agent-instructions) for more tips.
+
+## Building and Provisioning
+
+With our TypeSpec files ready, it was time to build and deploy:
+
+```bash
+npm install
+npm run compile
+```
+
+The compile step does two things:
+1. Validates your TypeSpec code
+2. Generates the JSON manifest that M365 Copilot understands
+
+Then came the exciting part: provisioning to M365. Back in the Agents Toolkit sidebar, we clicked the "Provision" button. The toolkit authenticated with the developer's M365 tenant and registered the agent.
+
+No Azure subscriptions to configure. No complex deployment pipelines. Click Provision, and you're done.
+
+## The First Test: It Just Works
+
+The moment of truth arrived. We opened Microsoft 365 Copilot in the browser, and there was our agent, ready to go. The developer typed their first query:
+
+"What is the best way to add issues to GitHub projects?"
+
+We held our breath. And then... it worked. Perfectly. First try.
+
+The agent searched the web, synthesized information about GitHub Projects, and provided a clear, well-structured response with actionable steps and links to official documentation. We exchanged a glance. It had actually worked. On the first try. No debugging. No tweaking. No "let me check the logs."
+
+"Okay, that was almost too easy," my friend said, still staring at the response.
+
+But we wanted to see what was happening under the hood.
+
+### The Developer Mode Trick
+
+This is one of my favorite tips for building agents. Before asking your next question, type:
+
+```
+-developer on
+```
+
+This enables the debug card, which shows you:
+
+- Agent ID and version
+- Which capabilities are enabled
+- Which capabilities were actually executed
+- Internal debugging IDs
+- Timestamp information
+
+It's invaluable when you're iterating on your agent and want to understand exactly what's happening.
+
+> [!TIP]
+> Use `-developer on` as soon as you start testing. The debug information helps you verify that your capabilities are configured correctly and being triggered as expected. Use `-developer off` to return to normal mode.
+
+## The Wow Moment
+
+After seeing it work, my friend wanted to test the real power: customization. They had added specific instructions about response style and structure. Would those actually be followed?
+
+They modified the instructions to be more specific about formatting, added guidance about when to include code examples, and adjusted the tone to be more encouraging for teams just getting started with GitHub. Then we went through the rapid iteration cycle:
+
+1. Saved the TypeSpec files
+2. Clicked "Provision" again (which automatically recompiles)
+3. Refreshed Copilot
+4. Asked another question
+
+The response came back formatted exactly as specified. The tone was encouraging and supportive, not just instructional. The structure included clear section headings. Code examples appeared where they made sense. Everything they had put in the instructions was being followed—not approximately, but precisely.
+
+That was the wow moment.
+
+"This is incredible," they said, leaning back in their chair. "I wrote maybe 50 lines of configuration, zero orchestration code, and I have a working AI agent that does exactly what I want. This is the first time I felt like I was configuring intelligence instead of coding around it."
+
+## The Power of Minimal Code
+
+This is what declarative agents are all about. My developer friend's key takeaway captured it perfectly: **with very little code and configuration, you can achieve your exact goal**.
+
+No LLM client libraries to import. No prompt engineering frameworks to learn. No vector databases to set up. No function calling to implement. No RAI policies to configure.
+
+Just:
+1. Define your agent with TypeSpec
+2. Write clear instructions
+3. Add capabilities
+4. Provision
+
+The Microsoft 365 Copilot platform handles everything else.
+
+## Tips That'll Save You Hours
+
+Before we wrapped up, my friend asked about speeding up the development workflow. I shared a few shortcuts that would save hours:
+
+### Use the Command Palette
+
+Instead of clicking through the Agents Toolkit sidebar every time, use the command palette:
+
+- Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac)
+- Type "Teams" or "Agents"
+- You'll see commands for Provision, Deploy, Debug, and more
+
+This keeps you in flow without constantly switching contexts.
+
+### Rapid Iteration
+
+The provision process is fast. When you're iterating on instructions:
+
+1. Edit your TypeSpec files
+2. Provision (Ctrl+Shift+P → "Teams: Provision")
+3. Refresh your browser
+4. Test
+
+The entire cycle takes seconds, not minutes.
+
+### Understanding Capabilities
+
+Declarative agents support multiple built-in capabilities beyond WebSearch:
+
+- **OneDriveAndSharePoint**: Access enterprise content
+- **GraphicArt**: Generate images
+- **CodeInterpreter**: Execute code and analyze data
+- **Email**: Read and send emails
+- **People**: Find colleagues and organizational information
+- **TeamsMessages**: Interact with Teams conversations
+
+You can combine multiple capabilities in a single agent. Check out the [full list of capabilities](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/typespec-capabilities) for more details.
+
+## Next Steps: The Path to Production
+
+Before we finished, my developer friend asked the natural next question about getting this into production. "How do I make this available to my whole organization?"
+
+The Agents Toolkit has this built in:
+
+1. Click "Publish" in the Agents Toolkit sidebar
+2. Submit to your Microsoft 365 admin
+3. The admin reviews it in the Microsoft Admin Center
+4. Once approved, it's available organization-wide
+
+"That's it?" they asked, almost incredulous. "No deployment pipelines? No infrastructure to manage?"
+
+That's it.
+
+We didn't walk through the actual approval process, but knowing that the path existed gave confidence that this wasn't just a toy—it was a real platform for building production agents.
+
+> [!INFO]
+> The admin approval process ensures governance and control over what agents run in your organization. Admins can review the agent's capabilities, instructions, and data access before making it available to users.
+
+## What's Next?
+
+If you're a TypeScript developer curious about building M365 Copilot agents, start with something your team actually needs—a recurring question they keep asking, a workflow that needs automation, a knowledge gap that slows them down. Begin with a simple agent using WebSearch or another single capability. Write clear instructions. Test with `-developer on` to understand what's happening.
+
+The barrier to entry is remarkably low, and the results are immediately useful.
+
+Here are some ideas based on real team pain points:
+
+1. **Team Knowledge Helper**: Combine OneDriveAndSharePoint with WebSearch to answer questions using both internal docs and external sources
+2. **Project Manager**: Use Email and TeamsMessages to help track project status and communications
+3. **Code Assistant**: Leverage CodeInterpreter for analyzing logs or generating code snippets
+4. **Creative Brief Generator**: Combine GraphicArt with document capabilities to create visual mockups
+
+The key is to start simple, prove the value, and then expand.
+
+## Resources and Documentation
+
+Here are the official resources referenced in this tutorial:
+
+- [Declarative Agents for Microsoft 365 Copilot Overview](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-declarative-agent)
+- [TypeSpec for Microsoft 365 Copilot Overview](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/overview-typespec)
+- [Build Declarative Agents with TypeSpec Tutorial](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/build-declarative-agents-typespec)
+- [Microsoft 365 Agents Toolkit Documentation](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/agents-toolkit-fundamentals)
+- [Microsoft 365 Agents Toolkit VS Code Extension](https://marketplace.visualstudio.com/items?itemName=TeamsDevApp.ms-teams-vscode-extension)
+- [Declarative Agent Capabilities Reference](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/typespec-capabilities)
+- [Writing Effective Instructions for Declarative Agents](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/declarative-agent-instructions)
+- [Introducing TypeSpec for Microsoft 365 Copilot (Blog Post)](https://devblogs.microsoft.com/microsoft365dev/introducing-typespec-for-microsoft-365-copilot/)
+
+## Conclusion
+
+Watching a skilled TypeScript developer go from skepticism to excitement in under an hour is why I love this platform. The declarative agent model removes so much complexity while still giving you powerful customization.
+
+As we wrapped up our session, my friend was already planning their next agent—one that would help their team with code review best practices, combining web search with their internal documentation. The barrier had been lowered enough that building agents felt approachable, not intimidating.
+
+You don't need to become an AI expert to build useful agents. You just need to understand your use case, write clear instructions, and let the M365 Copilot platform do the heavy lifting.
+
+If you build something cool, I'd love to hear about it. And if you hit any snags, remember: `-developer on` is your friend.
+
+Happy building!
+
+---
+
+*Have questions or want to share your first agent? Connect with me on [LinkedIn](https://www.linkedin.com/in/sebastienlevert/) or check out more articles on [The Copilot Stack](https://copilot-stack.com).*
