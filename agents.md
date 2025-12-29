@@ -188,13 +188,33 @@ npm run preview  # Preview production build
 - Automatic deployment on push to main branch
 - Build includes Pagefind indexing step
 
+## Git Workflow
+
+### Before Committing
+**CRITICAL: Always run a full build before committing any changes.**
+
+```bash
+npm run build
+```
+
+This ensures:
+- MDX files compile correctly
+- Frontmatter is valid YAML
+- All imports are correct
+- TypeScript types are valid
+- No build-time errors exist
+
+**Never commit without verifying the build succeeds.**
+
 ## Common Tasks
 
 ### Adding a Blog Post
-1. Create `.mdx` file in `src/content/blog/`
-2. Add required frontmatter fields
-3. Write content using MDX
-4. Verify with Playwright MCP before committing
+1. Create `.mdx` file in `src/content/blog/` (organize in `YYYY/MM/` folders)
+2. Add required frontmatter fields (use double quotes for values with colons)
+3. Import required components (e.g., `Admonition` for callouts)
+4. Write content using MDX
+5. **Run `npm run build` to verify**
+6. Verify with Playwright MCP before committing
 
 ### Adding an Episode
 1. Create `.mdx` file in `src/content/episodes/`
