@@ -54,8 +54,14 @@ jobs:
 
       - name: Prepare site directory
         run: |
+          echo "Contents of current directory:"
+          ls -la
+          echo "Contents of dist directory:"
+          ls -la dist/
           mkdir -p site
           cp -r dist/* site/
+          echo "Contents of site directory:"
+          ls -la site/
 
       - name: Build PR previews
         if: steps.open-prs.outputs.prs != ''
