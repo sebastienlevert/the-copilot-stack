@@ -6,6 +6,7 @@ import ReadingTime from '../components/content/ReadingTime.astro';
 import TagList from '../components/content/TagList.astro';
 import CopyCodeButton from '../components/ui/CopyCodeButton.astro';
 import HeadingAnchor from '../components/ui/HeadingAnchor.astro';
+import MermaidRenderer from '../components/ui/MermaidRenderer.astro';
 import { formatDate } from '../utils/formatDate';
 import { getReadingTime } from '../utils/readingTime';
 import { getAuthor } from '../data/authors';
@@ -57,6 +58,7 @@ const author = getAuthor(authorSlug) || { name: authorSlug, slug: authorSlug }; 
   <Footer />
   <CopyCodeButton />
   <HeadingAnchor />
+  <MermaidRenderer />
 </BaseLayout>
 
 <style>

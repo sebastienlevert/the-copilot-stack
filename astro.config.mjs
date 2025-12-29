@@ -4,6 +4,12 @@ import mdx from '@astrojs/mdx';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import { remarkAdmonitions } from './src/utils/remarkAdmonitions.mjs';
+import {
+  transformerNotationDiff,
+  transformerNotationHighlight,
+  transformerNotationWordHighlight,
+  transformerNotationFocus,
+} from '@shikijs/transformers';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,6 +38,22 @@ export default defineConfig({
         'shell',
         'powershell',
         'typespec',
+        'mermaid',
+      ],
+      transformers: [
+        transformerNotationDiff(),
+        transformerNotationHighlight(),
+        transformerNotationWordHighlight(),
+        transformerNotationFocus(),
+        {
+          name: 'line-numbers',
+          line(node) {
+            node.properties.className = node.properties.className || [];
+            if (!node.properties.className.includes('line')) {
+              node.properties.className.push('line');
+            }
+          },
+        },
       ],
     },
   },

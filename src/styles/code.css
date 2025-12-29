@@ -1,0 +1,63 @@
+/* Code block enhancements - line numbers and highlighting */
+
+/* Line numbers for code blocks */
+.prose-content pre {
+  counter-reset: line;
+  position: relative;
+}
+
+.prose-content pre code {
+  display: grid;
+  counter-increment: line 0;
+}
+
+.prose-content pre code .line {
+  counter-increment: line;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.prose-content pre code .line::before {
+  content: counter(line);
+  display: inline-block;
+  width: 2.5rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: var(--terminal-greenDim);
+  opacity: 0.5;
+  user-select: none;
+}
+
+/* Highlighted lines */
+.prose-content pre code .line.highlighted {
+  background-color: rgba(0, 255, 0, 0.1);
+  border-left: 3px solid var(--terminal-green);
+  padding-left: calc(0.5rem - 3px);
+}
+
+/* Diff indicators */
+.prose-content pre code .line.diff.add {
+  background-color: rgba(0, 255, 0, 0.15);
+}
+
+.prose-content pre code .line.diff.add::before {
+  content: counter(line) " +";
+  color: #00ff00;
+}
+
+.prose-content pre code .line.diff.remove {
+  background-color: rgba(255, 0, 0, 0.15);
+  opacity: 0.7;
+}
+
+.prose-content pre code .line.diff.remove::before {
+  content: counter(line) " -";
+  color: #ff0000;
+}
+
+/* Ensure proper spacing for code within lines */
+.prose-content pre code .line > span {
+  padding-left: 0.25rem;
+}

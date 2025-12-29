@@ -1,0 +1,119 @@
+---
+// Client-side Mermaid renderer
+// This component initializes Mermaid and renders all mermaid code blocks
+---
+
+<script>
+  import mermaid from 'mermaid';
+
+  // Initialize Mermaid with terminal theme
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    themeVariables: {
+      primaryColor: '#00FF00',
+      primaryTextColor: '#00FF00',
+      primaryBorderColor: '#00AA00',
+      lineColor: '#00AA00',
+      secondaryColor: '#1a1a1a',
+      tertiaryColor: '#0a0a0a',
+      background: '#0a0a0a',
+      mainBkg: '#1a1a1a',
+      secondBkg: '#0a0a0a',
+      textColor: '#00FF00',
+      border1: '#00AA00',
+      border2: '#00AA00',
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+    },
+  });
+
+  async function renderMermaidDiagrams() {
+    // Find all code blocks with language-mermaid class
+    const mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
+
+    for (const block of mermaidBlocks) {
+      try {
+        const code = block.textContent || '';
+        const pre = block.parentElement;
+
+        if (!pre) continue;
+
+        // Create a div for mermaid to render into
+        const container = document.createElement('div');
+        container.className = 'mermaid-diagram';
+        container.style.cssText = `
+          padding: 2rem;
+          background: var(--terminal-gray);
+          border: 1px solid var(--terminal-greenDim);
+          border-radius: 0.5rem;
+          margin: 2rem 0;
+          overflow-x: auto;
+        `;
+
+        // Generate unique ID for this diagram
+        const id = `mermaid-${Math.random().toString(36).substring(7)}`;
+
+        // Render the diagram
+        const { svg } = await mermaid.render(id, code);
+        container.innerHTML = svg;
+
+        // Replace the pre element with the rendered diagram
+        pre.replaceWith(container);
+      } catch (error) {
+        console.error('Failed to render Mermaid diagram:', error);
+        // Leave the code block as-is if rendering fails
+      }
+    }
+  }
+
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
+
+  // Run after view transitions (if enabled in the future)
+  document.addEventListener('astro:page-load', renderMermaidDiagrams);
+</script>
+
+<style is:global>
+  .mermaid-diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mermaid-diagram .node rect,
+  .mermaid-diagram .node circle,
+  .mermaid-diagram .node ellipse,
+  .mermaid-diagram .node polygon {
+    fill: var(--terminal-gray) !important;
+    stroke: var(--terminal-green) !important;
+    stroke-width: 2px;
+  }
+
+  .mermaid-diagram .node .label {
+    color: var(--terminal-green) !important;
+    fill: var(--terminal-green) !important;
+  }
+
+  .mermaid-diagram .edgePath .path {
+    stroke: var(--terminal-greenDim) !important;
+    stroke-width: 2px;
+  }
+
+  .mermaid-diagram .edgeLabel {
+    background-color: var(--terminal-black) !important;
+    color: var(--terminal-greenDim) !important;
+  }
+
+  .mermaid-diagram .cluster rect {
+    fill: var(--terminal-black) !important;
+    stroke: var(--terminal-greenDim) !important;
+    stroke-width: 1px;
+  }
+
+  .mermaid-diagram text {
+    fill: var(--terminal-green) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+</style>
