@@ -36,6 +36,9 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
+          # Save dist directory before switching branches
+          cp -r dist /tmp/dist-backup
+          
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
@@ -51,7 +54,7 @@ jobs:
           
           # Keep PR preview directories but replace root content
           find . -maxdepth 1 ! -name 'pr' ! -name '.git' ! -name '.' -exec rm -rf {} +
-          cp -r dist/* .
+          cp -r /tmp/dist-backup/* .
           
           git add .
           if ! git diff --staged --quiet; then
