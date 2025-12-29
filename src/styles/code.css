@@ -22,12 +22,13 @@
 .prose-content pre code .line::before {
   content: counter(line);
   display: inline-block;
-  width: 2.5rem;
-  margin-right: 1.5rem;
+  width: 1.5rem;
+  margin-right: 0.75rem;
   text-align: right;
   color: var(--terminal-greenDim);
   opacity: 0.5;
   user-select: none;
+  font-size: 0.875em;
 }
 
 /* Highlighted lines */
