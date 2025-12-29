@@ -153,6 +153,19 @@ npm run preview  # Preview production build
 - **No imports needed** - Core components (Admonition) are globally available
 - Use GitHub-style callouts: `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`, etc.
 - Import embed components only for rich media (YouTube, Spotify)
+- **Code block features**:
+  - Add `showLineNumbers` to code fence for line numbers: ` ```typescript showLineNumbers`
+  - Use `// [!code highlight]` or `# [!code highlight]` to highlight specific lines
+  - Use `// [!code ++]` for added lines (diff view)
+  - Use `// [!code --]` for removed lines (diff view)
+  - Example:
+    ````
+    ```typescript showLineNumbers
+    function hello() {
+      console.log("Hello"); // [!code highlight]
+    }
+    ```
+    ````
 
 ### Code Style
 - TypeScript for type safety

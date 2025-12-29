@@ -35,6 +35,13 @@ export function customTransformers() {
 
         node.properties.className = classes;
       },
+      pre(node) {
+        // Add data attribute for line numbers based on code fence meta
+        const meta = this.options.meta?.__raw || '';
+        if (meta.includes('showLineNumbers')) {
+          node.properties['data-line-numbers'] = 'true';
+        }
+      },
     },
   ];
 }
