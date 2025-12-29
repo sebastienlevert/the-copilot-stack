@@ -9,8 +9,8 @@ import { rehypeMermaid } from './src/utils/rehypeMermaid.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sebastienlevert.github.io',
-  base: process.env.BASE_URL || '/the-copilot-stack',
+  site: process.env.SITE_URL || 'https://sebastienlevert.github.io/the-copilot-stack',
+  base: process.env.BASE_PATH || '/the-copilot-stack',
   integrations: [
     mdx({
       extendMarkdownConfig: true,
