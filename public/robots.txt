@@ -1,0 +1,54 @@
+# robots.txt for The Copilot Stack
+# Allow all crawlers including AI/LLM bots
+
+# Default: Allow all bots
+User-agent: *
+Allow: /
+Sitemap: https://sebastienlevert.github.io/the-copilot-stack/sitemap-index.xml
+
+# Explicitly allow common LLM crawlers
+# OpenAI (ChatGPT, GPT models)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Google (Bard, Gemini)
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Meta/Facebook
+User-agent: FacebookBot
+Allow: /
+
+# ByteDance
+User-agent: Bytespider
+Allow: /
+
+# Omgili
+User-agent: Omgilibot
+Allow: /
