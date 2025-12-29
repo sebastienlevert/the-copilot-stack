@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import EpisodeLayout from '../../layouts/EpisodeLayout.astro';
+import Admonition from '../../components/content/Admonition.astro';
 
 export async function getStaticPaths() {
   const episodes = await getCollection('episodes', ({ data }) => !data.draft);
@@ -27,5 +28,5 @@ const ogImage = `${base}/og/episodes/${episode.slug}.png`;
   tags={episode.data.tags}
   ogImage={ogImage}
 >
-  <Content />
+  <Content components={{ Admonition }} />
 </EpisodeLayout>

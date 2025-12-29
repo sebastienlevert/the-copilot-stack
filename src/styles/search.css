@@ -1,0 +1,284 @@
+/* Pagefind Search Styling - Terminal Theme */
+
+/* CSS Custom Properties */
+:root {
+  --search-bg: #1a1a1a;
+  --search-bg-black: #0a0a0a;
+  --search-text: #00FF00;
+  --search-text-dim: #00AA00;
+  --search-white: #C5C5C5;
+  --search-selection: #003300;
+  --search-focus-glow: rgba(0, 255, 0, 0.1);
+  --search-highlight: rgba(0, 255, 0, 0.2);
+}
+
+/* Keyboard Shortcut Hint */
+.search-kbd-hint {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-text-dim);
+  border-radius: 0.25rem;
+  color: var(--search-text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.search-kbd-key {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.pagefind-ui__search-input:focus ~ .search-kbd-hint {
+  opacity: 0;
+}
+
+/* Loading State */
+.pagefind-ui__loading {
+  color: var(--search-text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Search Form Container */
+.pagefind-ui__form {
+  position: relative;
+}
+
+/* Search Input */
+.pagefind-ui__search-input {
+  width: 100%;
+  background-color: var(--search-bg);
+  color: var(--search-text);
+  border: 1px solid var(--search-text-dim);
+  border-radius: 0.375rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.pagefind-ui__search-input:focus {
+  outline: none;
+  border-color: var(--search-text);
+  box-shadow: 0 0 0 2px var(--search-focus-glow);
+}
+
+.pagefind-ui__search-input::placeholder {
+  color: var(--search-text-dim);
+}
+
+/* Search Clear Button */
+.pagefind-ui__search-clear {
+  color: var(--search-text-dim);
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.pagefind-ui__search-clear:hover {
+  color: var(--search-text);
+}
+
+/* Results Area */
+.pagefind-ui__results-area {
+  margin-top: 1rem;
+}
+
+.pagefind-ui__drawer {
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--search-text-dim) var(--search-bg);
+}
+
+.pagefind-ui__drawer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pagefind-ui__drawer::-webkit-scrollbar-track {
+  background: var(--search-bg);
+}
+
+.pagefind-ui__drawer::-webkit-scrollbar-thumb {
+  background: var(--search-text-dim);
+  border-radius: 4px;
+}
+
+.pagefind-ui__drawer::-webkit-scrollbar-thumb:hover {
+  background: var(--search-text);
+}
+
+/* Individual Result */
+.pagefind-ui__result {
+  background-color: var(--search-bg);
+  border: 1px solid var(--search-text-dim);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.pagefind-ui__result:hover {
+  border-color: var(--search-text);
+  background-color: #1f1f1f;
+  transform: translateX(2px);
+}
+
+/* Result Link */
+.pagefind-ui__result-link {
+  text-decoration: none;
+  display: block;
+}
+
+.pagefind-ui__result-link:focus {
+  outline: none;
+}
+
+.pagefind-ui__result-link:focus-visible .pagefind-ui__result {
+  border-color: var(--search-text);
+  box-shadow: 0 0 0 2px var(--search-focus-glow);
+}
+
+/* Result Title */
+.pagefind-ui__result-title {
+  color: var(--search-text);
+  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Result Excerpt */
+.pagefind-ui__result-excerpt {
+  color: var(--search-white);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+.pagefind-ui__result-excerpt mark {
+  background-color: var(--search-highlight);
+  color: var(--search-text);
+  font-weight: bold;
+  padding: 0 0.125rem;
+  border-radius: 0.125rem;
+}
+
+/* Result Tags/Breadcrumbs */
+.pagefind-ui__result-tags,
+.pagefind-ui__result-nested {
+  color: var(--search-text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Result Image */
+.pagefind-ui__result-image {
+  display: none;
+}
+
+/* Messages (No Results, Error, etc.) */
+.pagefind-ui__message {
+  color: var(--search-text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* Buttons */
+.pagefind-ui__button {
+  background-color: var(--search-text);
+  color: var(--search-bg-black);
+  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  border-radius: 0.375rem;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.pagefind-ui__button:hover {
+  background-color: var(--search-text-dim);
+}
+
+.pagefind-ui__button:focus-visible {
+  outline: 2px solid var(--search-text);
+  outline-offset: 2px;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  #mobile-search {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 40;
+    padding-top: 5rem;
+    overflow-y: auto;
+  }
+
+  .pagefind-ui__result {
+    padding: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pagefind-ui__result-title {
+    font-size: 0.938rem;
+  }
+
+  .pagefind-ui__result-excerpt {
+    font-size: 0.813rem;
+  }
+
+  .pagefind-ui__drawer {
+    max-height: 60vh;
+  }
+}
+
+/* Desktop Search Container Positioning */
+@media (min-width: 769px) {
+  #header-search {
+    position: relative;
+  }
+}
+
+/* Accessibility Improvements */
+.pagefind-ui__result-link:focus-visible,
+.pagefind-ui__search-input:focus-visible,
+.pagefind-ui__search-clear:focus-visible,
+.pagefind-ui__button:focus-visible {
+  outline: 2px solid var(--search-text);
+  outline-offset: 2px;
+}
+
+/* Loading Animation */
+@keyframes searchPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pagefind-ui__loading::after {
+  content: '...';
+  animation: searchPulse 1.5s ease-in-out infinite;
+}

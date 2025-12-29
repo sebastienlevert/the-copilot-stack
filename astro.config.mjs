@@ -11,7 +11,9 @@ export default defineConfig({
   site: 'https://sebastienlevert.github.io',
   base: '/the-copilot-stack',
   integrations: [
-    mdx(),
+    mdx({
+      extendMarkdownConfig: true,
+    }),
     tailwind(),
     sitemap(),
   ],
@@ -33,7 +35,6 @@ export default defineConfig({
         'shell',
         'powershell',
         'typespec',
-        'mermaid',
       ],
       transformers: customTransformers(),
     },

@@ -25,6 +25,7 @@ This document provides essential context for AI assistants working on The Copilo
 - **Astro Content Collections** - Type-safe content management
 - **Shiki** - Syntax highlighting with github-dark theme
 - **Remark Plugins** - Custom admonitions and transformers
+- **Global Components** - Admonition component available in all MDX files without imports
 
 ### Search & Discovery
 - **Pagefind** - Client-side static search (built after Astro build)
@@ -146,10 +147,12 @@ npm run preview  # Preview production build
 ```
 
 ### Content Creation
-- Blog posts go in `src/content/blog/` as `.mdx` files
+- Blog posts go in `src/content/blog/` as `.mdx` files (organize in `YYYY/MM/` folders)
 - Episodes go in `src/content/episodes/` as `.mdx` files
 - Use frontmatter schema from content collections
-- Import embed components for rich media
+- **No imports needed** - Core components (Admonition) are globally available
+- Use GitHub-style callouts: `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`, etc.
+- Import embed components only for rich media (YouTube, Spotify)
 
 ### Code Style
 - TypeScript for type safety
@@ -211,8 +214,8 @@ This ensures:
 ### Adding a Blog Post
 1. Create `.mdx` file in `src/content/blog/` (organize in `YYYY/MM/` folders)
 2. Add required frontmatter fields (use double quotes for values with colons)
-3. Import required components (e.g., `Admonition` for callouts)
-4. Write content using MDX
+3. Write content using MDX - **no imports needed!** Components are globally available
+4. Use GitHub-style callouts: `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`, `> [!INFO]`
 5. **Run `npm run build` to verify**
 6. Verify with Playwright MCP before committing
 

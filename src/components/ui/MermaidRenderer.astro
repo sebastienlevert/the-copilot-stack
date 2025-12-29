@@ -30,16 +30,30 @@
     },
   });
 
+  let initialized = false;
+
   async function renderMermaidDiagrams() {
-    // Find all code blocks with language-mermaid class
-    const mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
+    // Prevent multiple initializations
+    if (initialized) return;
+
+    // Find all code blocks with mermaid language (both Shiki and standard patterns)
+    const mermaidBlocks = document.querySelectorAll(
+      'pre[data-language="mermaid"], pre code.language-mermaid'
+    );
+
+    if (mermaidBlocks.length === 0) return;
+
+    initialized = true;
 
     for (const block of mermaidBlocks) {
       try {
-        const code = block.textContent || '';
-        const pre = block.parentElement;
+        // Handle both <pre> and <code> elements
+        const isPreElement = block.tagName === 'PRE';
+        const codeElement = isPreElement ? block.querySelector('code') : block;
+        const code = codeElement?.textContent || '';
+        const pre = isPreElement ? block : block.closest('pre');
 
-        if (!pre) continue;
+        if (!pre || !code.trim()) continue;
 
         // Create a div for mermaid to render into
         const container = document.createElement('div');
@@ -64,16 +78,38 @@
         pre.replaceWith(container);
       } catch (error) {
         console.error('Failed to render Mermaid diagram:', error);
-        // Leave the code block as-is if rendering fails
+        // Add visual error indicator
+        if (pre) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'mermaid-error';
+          errorDiv.style.cssText = `
+            padding: 1rem;
+            background: var(--terminal-gray);
+            border: 1px solid #ff4444;
+            border-radius: 0.5rem;
+            color: #ff6666;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 2rem 0;
+          `;
+          errorDiv.textContent = `Failed to render diagram: ${error.message}`;
+          pre.replaceWith(errorDiv);
+        }
       }
     }
   }
 
   // Run on page load
-  document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaidDiagrams);
+  } else {
+    renderMermaidDiagrams();
+  }
 
-  // Run after view transitions (if enabled in the future)
-  document.addEventListener('astro:page-load', renderMermaidDiagrams);
+  // Run after view transitions (reset initialized flag)
+  document.addEventListener('astro:page-load', () => {
+    initialized = false;
+    renderMermaidDiagrams();
+  });
 </script>
 
 <style is:global>
