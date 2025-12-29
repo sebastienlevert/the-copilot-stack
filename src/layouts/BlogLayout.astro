@@ -8,20 +8,22 @@ import CopyCodeButton from '../components/ui/CopyCodeButton.astro';
 import HeadingAnchor from '../components/ui/HeadingAnchor.astro';
 import { formatDate } from '../utils/formatDate';
 import { getReadingTime } from '../utils/readingTime';
+import { getAuthor } from '../data/authors';
 
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
-  author: string;
+  author: string; // Author slug
   tags: string[];
   coverImage?: string;
   content: string;
 }
 
-const { title, description, pubDate, author, tags, coverImage, content } = Astro.props;
+const { title, description, pubDate, author: authorSlug, tags, coverImage, content } = Astro.props;
 const readingTime = getReadingTime(content);
 const base = import.meta.env.BASE_URL;
+const author = getAuthor(authorSlug) || { name: authorSlug, slug: authorSlug }; // Fallback if author not found
 ---
 
 <BaseLayout title={title} description={description} image={coverImage} article={true}>
@@ -37,7 +39,7 @@ const base = import.meta.env.BASE_URL;
             {formatDate(pubDate)}
           </time>
           <span>•</span>
-          <span>by <a href={`${base}/authors/${encodeURIComponent(author)}`} class="text-terminal-green hover:text-terminal-greenDim transition-colors duration-200 underline">{author}</a></span>
+          <span>by <a href={`${base}/authors/${author.slug}`} class="text-terminal-green hover:text-terminal-greenDim transition-colors duration-200 underline">{author.name}</a></span>
           <span>•</span>
           <ReadingTime readingTime={readingTime} />
         </div>

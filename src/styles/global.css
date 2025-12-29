@@ -99,7 +99,7 @@
 @layer components {
   /* Terminal prompt style */
   .terminal-prompt::before {
-    content: '$ ';
+    content: '> ';
     @apply text-terminal-green;
   }
 

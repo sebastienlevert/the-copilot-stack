@@ -6,7 +6,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
-    author: z.string().default('Sébastien Levert'),
+    author: z.string().default('sebastienlevert'), // Author slug reference
     tags: z.array(z.string()).default([]),
     coverImage: z.string().optional(),
     draft: z.boolean().default(false),
