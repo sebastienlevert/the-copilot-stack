@@ -1,0 +1,90 @@
+---
+interface Props {
+  type?: 'note' | 'info' | 'tip' | 'warning' | 'caution' | 'danger';
+  title?: string;
+}
+
+const { type = 'note', title } = Astro.props;
+
+const config = {
+  note: {
+    icon: '📝',
+    defaultTitle: 'Note',
+    color: 'terminal-greenDim',
+    borderColor: 'terminal-green',
+  },
+  info: {
+    icon: 'ℹ️',
+    defaultTitle: 'Info',
+    color: 'blue-400',
+    borderColor: 'blue-500',
+  },
+  tip: {
+    icon: '💡',
+    defaultTitle: 'Tip',
+    color: 'green-400',
+    borderColor: 'green-500',
+  },
+  warning: {
+    icon: '⚠️',
+    defaultTitle: 'Warning',
+    color: 'yellow-400',
+    borderColor: 'yellow-500',
+  },
+  caution: {
+    icon: '⚡',
+    defaultTitle: 'Caution',
+    color: 'orange-400',
+    borderColor: 'orange-500',
+  },
+  danger: {
+    icon: '🚨',
+    defaultTitle: 'Danger',
+    color: 'red-400',
+    borderColor: 'red-500',
+  },
+};
+
+const admonitionConfig = config[type];
+const displayTitle = title || admonitionConfig.defaultTitle;
+---
+
+<div class={`admonition admonition-${type} border-l-4 border-${admonitionConfig.borderColor} bg-terminal-gray/50 p-4 my-6 rounded-r-md`}>
+  <div class={`admonition-title flex items-center gap-2 font-bold text-${admonitionConfig.color} mb-2`}>
+    <span class="admonition-icon text-xl">{admonitionConfig.icon}</span>
+    <span>{displayTitle}</span>
+  </div>
+  <div class="admonition-content text-terminal-white/90 leading-relaxed">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .admonition {
+    backdrop-filter: blur(8px);
+  }
+
+  .admonition-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .admonition-content :global(p) {
+    margin-top: 0;
+  }
+
+  .admonition-content :global(code) {
+    background-color: rgba(0, 255, 0, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+
+  .admonition-content :global(a) {
+    color: var(--terminal-green);
+    text-decoration: underline;
+  }
+
+  .admonition-content :global(a:hover) {
+    color: var(--terminal-greenDim);
+  }
+</style>

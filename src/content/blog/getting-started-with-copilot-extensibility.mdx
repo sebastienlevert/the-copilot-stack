@@ -7,11 +7,14 @@ tags: ['copilot', 'extensibility', 'getting-started', 'plugins']
 draft: false
 ---
 
+import Admonition from '../../components/content/Admonition.astro';
+
 ## Introduction
 
 Microsoft Copilot is a **powerful AI-powered assistant** that can be extended to meet your specific needs. In this comprehensive guide, we'll explore the fundamentals of Copilot extensibility and show you how to build _custom plugins_ that enhance its capabilities.
 
-> **Note:** This guide assumes you have basic knowledge of TypeScript and REST APIs. If you're new to these technologies, we recommend familiarizing yourself with them first.
+> [!NOTE]
+> This guide assumes you have basic knowledge of TypeScript and REST APIs. If you're new to these technologies, we recommend familiarizing yourself with them first.
 
 ## What is Copilot Extensibility?
 
@@ -58,6 +61,12 @@ Most plugins require authentication to access external resources. Copilot suppor
 - API Keys
 - Service principals
 - Managed identities
+
+> [!WARNING]
+> Never hardcode API keys or secrets in your code. Always use secure storage mechanisms like Azure Key Vault or environment variables.
+
+> [!TIP]
+> Use OAuth 2.0 with refresh tokens for the best user experience. This allows your plugin to access resources without repeatedly prompting users for credentials.
 
 ### 3. Context Management
 
@@ -215,6 +224,9 @@ public class WeatherPlugin : ICopilotPlugin
 ```
 
 ## Best Practices
+
+> [!INFO]
+> Following these best practices will help you build robust, maintainable, and secure Copilot plugins that provide excellent user experiences.
 
 When building Copilot plugins, follow these best practices:
 

@@ -7,11 +7,14 @@ tags: ['copilot', 'authentication', 'security', 'oauth']
 draft: false
 ---
 
+import Admonition from '../../components/content/Admonition.astro';
+
 ## Introduction
 
 **Security is paramount** when building Copilot plugins that access sensitive data or external services. In this comprehensive post, we'll dive deep into _advanced authentication patterns_ and security best practices that will help you build **enterprise-grade** Copilot extensions.
 
-> **Warning:** Never hardcode API keys or secrets in your code. Always use secure storage mechanisms like Azure Key Vault or environment variables.
+> [!DANGER]
+> Never hardcode API keys or secrets in your code. Always use secure storage mechanisms like Azure Key Vault or environment variables. Exposed credentials can lead to severe security breaches.
 
 ![OAuth 2.0 Authentication Flow](/the-copilot-stack/images/auth-flow.svg)
 
@@ -106,6 +109,12 @@ import { DefaultAzureCredential } from '@azure/identity';
 const credential = new DefaultAzureCredential();
 const token = await credential.getToken('https://vault.azure.net/.default');
 ```
+
+> [!TIP]
+> Managed Identities are the most secure authentication method for Azure resources. They automatically handle credential rotation and eliminate the risk of credential leakage.
+
+> [!CAUTION]
+> When using managed identities, ensure your Azure resources have the appropriate role assignments. Missing permissions can cause authentication failures that are difficult to debug.
 
 ## Security Best Practices
 
