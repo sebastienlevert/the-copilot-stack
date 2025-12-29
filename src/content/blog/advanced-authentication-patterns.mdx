@@ -9,7 +9,11 @@ draft: false
 
 ## Introduction
 
-Security is paramount when building Copilot plugins that access sensitive data or external services. In this post, we'll dive deep into advanced authentication patterns and security best practices.
+**Security is paramount** when building Copilot plugins that access sensitive data or external services. In this comprehensive post, we'll dive deep into _advanced authentication patterns_ and security best practices that will help you build **enterprise-grade** Copilot extensions.
+
+> **Warning:** Never hardcode API keys or secrets in your code. Always use secure storage mechanisms like Azure Key Vault or environment variables.
+
+![OAuth 2.0 Authentication Flow](/images/auth-flow.svg)
 
 ## OAuth 2.0 Integration
 
@@ -166,8 +170,203 @@ class RateLimiter {
 }
 ```
 
+### TypeSpec API Definition
+
+Define your authentication API using TypeSpec for type-safe contracts:
+
+```typespec
+import "@typespec/http";
+import "@typespec/rest";
+
+using TypeSpec.Http;
+using TypeSpec.Rest;
+
+@service({
+  title: "Copilot Plugin Authentication API"
+})
+namespace CopilotAuth;
+
+model AuthRequest {
+  clientId: string;
+  scope: string[];
+  redirectUri: url;
+  state?: string;
+}
+
+model TokenRequest {
+  code: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUri: url;
+  grantType: "authorization_code";
+}
+
+model TokenResponse {
+  accessToken: string;
+  tokenType: "Bearer";
+  expiresIn: int32;
+  refreshToken?: string;
+  scope: string;
+}
+
+@route("/auth")
+interface Authentication {
+  @post
+  @route("/authorize")
+  authorize(@body request: AuthRequest): {
+    @statusCode _: 302;
+    @header location: url;
+  };
+
+  @post
+  @route("/token")
+  token(@body request: TokenRequest): TokenResponse;
+}
+```
+
+### YAML Configuration
+
+Configure authentication providers in YAML:
+
+```yaml
+authentication:
+  providers:
+    - name: azure-ad
+      type: oauth2
+      clientId: ${AZURE_CLIENT_ID}
+      clientSecret: ${AZURE_CLIENT_SECRET}
+      tenantId: ${AZURE_TENANT_ID}
+      scopes:
+        - openid
+        - profile
+        - email
+      endpoints:
+        authorize: https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
+        token: https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token
+
+    - name: github
+      type: oauth2
+      clientId: ${GITHUB_CLIENT_ID}
+      clientSecret: ${GITHUB_CLIENT_SECRET}
+      scopes:
+        - user:email
+        - read:org
+      endpoints:
+        authorize: https://github.com/login/oauth/authorize
+        token: https://github.com/login/oauth/access_token
+
+security:
+  tokenValidation:
+    issuer: https://login.microsoftonline.com/${TENANT_ID}/v2.0
+    audience: api://copilot-plugin
+    validateLifetime: true
+    clockSkew: 300 # 5 minutes
+
+  rateLimiting:
+    enabled: true
+    requestsPerMinute: 100
+    burstSize: 20
+
+  cors:
+    allowedOrigins:
+      - https://copilot.microsoft.com
+      - https://*.microsoft365.com
+    allowedMethods:
+      - GET
+      - POST
+      - OPTIONS
+    allowedHeaders:
+      - Authorization
+      - Content-Type
+```
+
+## Security Compliance
+
+Ensure your plugin meets enterprise security requirements:
+
+### Compliance Checklist
+
+| Requirement | Implementation | Status |
+|-------------|----------------|--------|
+| Data Encryption | TLS 1.2+ | ✅ Required |
+| Token Storage | Encrypted at rest | ✅ Required |
+| Audit Logging | All auth events | ✅ Required |
+| Session Management | Secure cookies | ✅ Required |
+| CSRF Protection | Anti-CSRF tokens | ✅ Required |
+| XSS Prevention | Input sanitization | ✅ Required |
+| SQL Injection | Parameterized queries | ✅ Required |
+
+### PowerShell Security Script
+
+Audit your plugin's security posture:
+
+```powershell
+# Security audit script for Copilot plugins
+$PluginPath = "C:\Copilot\Plugins\WeatherPlugin"
+$Results = @()
+
+# Check for hardcoded secrets
+Write-Host "Checking for hardcoded secrets..." -ForegroundColor Yellow
+$SecretPatterns = @(
+    "password\s*=",
+    "api[_-]?key\s*=",
+    "client[_-]?secret\s*=",
+    "bearer\s+[a-zA-Z0-9]+"
+)
+
+Get-ChildItem -Path $PluginPath -Recurse -Include "*.ts","*.cs","*.json" | ForEach-Object {
+    $Content = Get-Content $_.FullName
+    foreach ($Pattern in $SecretPatterns) {
+        if ($Content -match $Pattern) {
+            $Results += [PSCustomObject]@{
+                File = $_.FullName
+                Issue = "Potential hardcoded secret"
+                Severity = "High"
+            }
+        }
+    }
+}
+
+# Check SSL/TLS configuration
+Write-Host "Checking SSL/TLS configuration..." -ForegroundColor Yellow
+$ConfigFile = Join-Path $PluginPath "config.json"
+$Config = Get-Content $ConfigFile | ConvertFrom-Json
+
+if ($Config.authentication.requireHttps -ne $true) {
+    $Results += [PSCustomObject]@{
+        File = $ConfigFile
+        Issue = "HTTPS not enforced"
+        Severity = "Critical"
+    }
+}
+
+# Output results
+if ($Results.Count -eq 0) {
+    Write-Host "✓ No security issues found!" -ForegroundColor Green
+} else {
+    $Results | Format-Table -AutoSize
+    Write-Host "⚠ Found $($Results.Count) security issue(s)" -ForegroundColor Red
+}
+```
+
 ## Conclusion
 
-Implementing proper authentication and security patterns is essential for building production-ready Copilot plugins. By following these practices, you can ensure your plugins are secure, maintainable, and compliant with security standards.
+Implementing proper authentication and security patterns is **essential** for building production-ready Copilot plugins. By following these practices, you can ensure your plugins are:
 
-In the next post, we'll explore performance optimization techniques for Copilot plugins!
+- ✅ **Secure** against common vulnerabilities
+- ✅ **Compliant** with enterprise security standards
+- ✅ **Maintainable** with clear patterns
+- ✅ **Scalable** for growing user bases
+
+### Key Takeaways
+
+1. Always use OAuth 2.0 for user authentication
+2. Store secrets in secure vaults, never in code
+3. Implement comprehensive logging and monitoring
+4. Validate all input and sanitize output
+5. Use TypeScript/TypeSpec for type safety
+6. Test security scenarios thoroughly
+
+> **Remember:** Security is not a one-time implementation but an ongoing process. Regularly audit your plugins, update dependencies, and stay informed about new vulnerabilities.
+
+In the next post, we'll explore **performance optimization techniques** for Copilot plugins, including caching strategies, request batching, and monitoring!

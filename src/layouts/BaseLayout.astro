@@ -10,7 +10,8 @@ interface Props {
 
 const { title, description, image, article = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = image || '/og-image.png';
+const base = import.meta.env.BASE_URL;
+const socialImage = image || `${base}/og-default.png`;
 const clarityId = import.meta.env.PUBLIC_CLARITY_ID;
 ---
 

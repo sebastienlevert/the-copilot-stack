@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import TagList from '../components/content/TagList.astro';
+import CopyCodeButton from '../components/ui/CopyCodeButton.astro';
 import YouTube from '../components/embeds/YouTube.astro';
 import Spotify from '../components/embeds/Spotify.astro';
 import AppleMusic from '../components/embeds/AppleMusic.astro';
@@ -17,12 +18,13 @@ interface Props {
   spotifyUrl?: string;
   appleMusicUrl?: string;
   tags: string[];
+  ogImage?: string;
 }
 
-const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, appleMusicUrl, tags } = Astro.props;
+const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, appleMusicUrl, tags, ogImage } = Astro.props;
 ---
 
-<BaseLayout title={`Episode ${episodeNumber}: ${title}`} description={description}>
+<BaseLayout title={`Episode ${episodeNumber}: ${title}`} description={description} image={ogImage}>
   <Header />
   <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
     <article>
@@ -84,6 +86,7 @@ const { title, description, pubDate, episodeNumber, youtubeId, spotifyUrl, apple
     </article>
   </main>
   <Footer />
+  <CopyCodeButton />
 </BaseLayout>
 
 <style>

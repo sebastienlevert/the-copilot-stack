@@ -1,0 +1,50 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { fill: #00FF00; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: bold; }
+      .subtitle { fill: #00AA00; font-family: 'JetBrains Mono', monospace; font-size: 16px; }
+      .box { fill: #1a1a1a; stroke: #00FF00; stroke-width: 2; }
+      .text { fill: #C5C5C5; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+      .arrow { stroke: #00AA00; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#00AA00" />
+    </marker>
+  </defs>
+
+  <rect width="800" height="400" fill="#0a0a0a"/>
+
+  <text x="400" y="40" class="title" text-anchor="middle">Copilot Plugin Architecture</text>
+
+  <!-- User Box -->
+  <rect x="50" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="125" y="135" class="text" text-anchor="middle">User</text>
+  <text x="125" y="155" class="subtitle" text-anchor="middle">Interaction</text>
+
+  <!-- Copilot Box -->
+  <rect x="325" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="400" y="135" class="text" text-anchor="middle">Microsoft</text>
+  <text x="400" y="155" class="subtitle" text-anchor="middle">Copilot</text>
+
+  <!-- Plugin Box -->
+  <rect x="600" y="100" width="150" height="80" class="box" rx="5"/>
+  <text x="675" y="135" class="text" text-anchor="middle">Custom</text>
+  <text x="675" y="155" class="subtitle" text-anchor="middle">Plugin</text>
+
+  <!-- Data Source Box -->
+  <rect x="600" y="280" width="150" height="80" class="box" rx="5"/>
+  <text x="675" y="315" class="text" text-anchor="middle">External</text>
+  <text x="675" y="335" class="subtitle" text-anchor="middle">Data Source</text>
+
+  <!-- Arrows -->
+  <path d="M 200 140 L 325 140" class="arrow"/>
+  <path d="M 475 140 L 600 140" class="arrow"/>
+  <path d="M 675 180 L 675 280" class="arrow"/>
+
+  <!-- Labels -->
+  <text x="262" y="130" class="subtitle">Query</text>
+  <text x="537" y="130" class="subtitle">Plugin Call</text>
+  <text x="680" y="235" class="subtitle">Data</text>
+
+  <text x="400" y="380" class="subtitle" text-anchor="middle">$ The Copilot Stack</text>
+</svg>

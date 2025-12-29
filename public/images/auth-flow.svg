@@ -1,0 +1,68 @@
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { fill: #00FF00; font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: bold; }
+      .subtitle { fill: #00AA00; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
+      .box { fill: #1a1a1a; stroke: #00FF00; stroke-width: 2; }
+      .text { fill: #C5C5C5; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+      .step { fill: #00FF00; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: bold; }
+      .arrow { stroke: #00AA00; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#00AA00" />
+    </marker>
+  </defs>
+
+  <rect width="800" height="500" fill="#0a0a0a"/>
+
+  <text x="400" y="40" class="title" text-anchor="middle">OAuth 2.0 Authentication Flow</text>
+
+  <!-- Step 1 -->
+  <rect x="50" y="80" width="200" height="60" class="box" rx="5"/>
+  <text x="150" y="105" class="step" text-anchor="middle">1. Authorization Request</text>
+  <text x="150" y="125" class="text" text-anchor="middle">User initiates login</text>
+
+  <path d="M 150 140 L 150 180" class="arrow"/>
+
+  <!-- Step 2 -->
+  <rect x="50" y="180" width="200" height="60" class="box" rx="5"/>
+  <text x="150" y="205" class="step" text-anchor="middle">2. User Consent</text>
+  <text x="150" y="225" class="text" text-anchor="middle">Grants permissions</text>
+
+  <path d="M 250 210 L 350 210" class="arrow"/>
+
+  <!-- Step 3 -->
+  <rect x="350" y="180" width="200" height="60" class="box" rx="5"/>
+  <text x="450" y="205" class="step" text-anchor="middle">3. Authorization Code</text>
+  <text x="450" y="225" class="text" text-anchor="middle">Code returned to app</text>
+
+  <path d="M 450 240 L 450 280" class="arrow"/>
+
+  <!-- Step 4 -->
+  <rect x="350" y="280" width="200" height="60" class="box" rx="5"/>
+  <text x="450" y="305" class="step" text-anchor="middle">4. Token Exchange</text>
+  <text x="450" y="325" class="text" text-anchor="middle">Code for access token</text>
+
+  <path d="M 350 310 L 250 310" class="arrow"/>
+
+  <!-- Step 5 -->
+  <rect x="50" y="280" width="200" height="60" class="box" rx="5"/>
+  <text x="150" y="305" class="step" text-anchor="middle">5. Access Token</text>
+  <text x="150" y="325" class="text" text-anchor="middle">Stored securely</text>
+
+  <path d="M 150 340 L 150 380" class="arrow"/>
+
+  <!-- Step 6 -->
+  <rect x="50" y="380" width="200" height="60" class="box" rx="5"/>
+  <text x="150" y="405" class="step" text-anchor="middle">6. API Access</text>
+  <text x="150" y="425" class="text" text-anchor="middle">Token used for requests</text>
+
+  <!-- Side boxes -->
+  <rect x="590" y="130" width="180" height="100" class="box" rx="5"/>
+  <text x="680" y="155" class="subtitle" text-anchor="middle">Security Notes:</text>
+  <text x="680" y="180" class="text" text-anchor="middle" font-size="11">✓ HTTPS required</text>
+  <text x="680" y="200" class="text" text-anchor="middle" font-size="11">✓ State parameter</text>
+  <text x="680" y="220" class="text" text-anchor="middle" font-size="11">✓ Token refresh</text>
+
+  <text x="400" y="480" class="subtitle" text-anchor="middle">$ The Copilot Stack</text>
+</svg>

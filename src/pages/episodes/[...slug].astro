@@ -12,6 +12,8 @@ export async function getStaticPaths() {
 
 const { episode } = Astro.props;
 const { Content } = await episode.render();
+const base = import.meta.env.BASE_URL;
+const ogImage = `${base}/og/episodes/${episode.slug}.png`;
 ---
 
 <EpisodeLayout
@@ -23,6 +25,7 @@ const { Content } = await episode.render();
   spotifyUrl={episode.data.spotifyUrl}
   appleMusicUrl={episode.data.appleMusicUrl}
   tags={episode.data.tags}
+  ogImage={ogImage}
 >
   <Content />
 </EpisodeLayout>
