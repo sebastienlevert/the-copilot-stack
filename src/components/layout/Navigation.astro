@@ -21,16 +21,16 @@ function isActive(href: string): boolean {
 }
 ---
 
-<nav class="hidden md:block">
-  <ul class="flex items-center space-x-3 list-none">
-    <li class="text-terminal-greenDim text-sm" aria-hidden="true">></li>
+<nav class="hidden md:flex items-baseline">
+  <ul class="flex items-baseline gap-3 list-none m-0 p-0">
+    <li class="text-terminal-greenDim text-base" aria-hidden="true">></li>
     {navItems.map((item, index) => (
       <>
         <li>
           <a
             href={item.href}
             class={`
-              no-underline hover:no-underline
+              text-base no-underline hover:no-underline
               transition-colors duration-200
               ${isActive(item.href)
                 ? 'text-terminal-green'
@@ -39,11 +39,11 @@ function isActive(href: string): boolean {
             `}
             aria-label={item.label}
           >
-            <span class="text-sm">{item.label}</span>
+            {item.label}
           </a>
         </li>
         {index < navItems.length - 1 && (
-          <li class="text-terminal-greenDim text-sm" aria-hidden="true">></li>
+          <li class="text-terminal-greenDim text-base" aria-hidden="true">></li>
         )}
       </>
     ))}

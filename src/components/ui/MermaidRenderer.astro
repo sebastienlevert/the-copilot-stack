@@ -38,7 +38,7 @@
 
     // Find all code blocks with mermaid language (both Shiki and standard patterns)
     const mermaidBlocks = document.querySelectorAll(
-      'pre[data-language="mermaid"], pre code.language-mermaid'
+      'pre.language-mermaid, pre[data-language="mermaid"], pre code.language-mermaid, pre:has(code.language-mermaid)'
     );
 
     if (mermaidBlocks.length === 0) return;
@@ -50,8 +50,18 @@
         // Handle both <pre> and <code> elements
         const isPreElement = block.tagName === 'PRE';
         const codeElement = isPreElement ? block.querySelector('code') : block;
-        const code = codeElement?.textContent || '';
         const pre = isPreElement ? block : block.closest('pre');
+
+        // Extract the mermaid code from the element
+        let code = codeElement?.textContent || block.textContent || '';
+
+        // Remove any line number spans or other Shiki artifacts
+        if (codeElement) {
+          const lines = codeElement.querySelectorAll('.line');
+          if (lines.length > 0) {
+            code = Array.from(lines).map(line => line.textContent).join('\n');
+          }
+        }
 
         if (!pre || !code.trim()) continue;
 

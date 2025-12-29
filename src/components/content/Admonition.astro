@@ -10,38 +10,38 @@ const config = {
   note: {
     icon: '📝',
     defaultTitle: 'Note',
-    color: 'terminal-greenDim',
-    borderColor: 'terminal-green',
+    color: '#00AA00',
+    borderColor: '#00FF00',
   },
   info: {
     icon: 'ℹ️',
     defaultTitle: 'Info',
-    color: 'blue-400',
-    borderColor: 'blue-500',
+    color: '#60A5FA',
+    borderColor: '#3B82F6',
   },
   tip: {
     icon: '💡',
     defaultTitle: 'Tip',
-    color: 'green-400',
-    borderColor: 'green-500',
+    color: '#4ADE80',
+    borderColor: '#22C55E',
   },
   warning: {
     icon: '⚠️',
     defaultTitle: 'Warning',
-    color: 'yellow-400',
-    borderColor: 'yellow-500',
+    color: '#FACC15',
+    borderColor: '#EAB308',
   },
   caution: {
     icon: '⚡',
     defaultTitle: 'Caution',
-    color: 'orange-400',
-    borderColor: 'orange-500',
+    color: '#FB923C',
+    borderColor: '#F97316',
   },
   danger: {
     icon: '🚨',
     defaultTitle: 'Danger',
-    color: 'red-400',
-    borderColor: 'red-500',
+    color: '#F87171',
+    borderColor: '#EF4444',
   },
 };
 
@@ -49,8 +49,14 @@ const admonitionConfig = config[type];
 const displayTitle = title || admonitionConfig.defaultTitle;
 ---
 
-<div class={`admonition admonition-${type} border-l-4 border-${admonitionConfig.borderColor} bg-terminal-gray/50 p-4 my-6 rounded-r-md`}>
-  <div class={`admonition-title flex items-center gap-2 font-bold text-${admonitionConfig.color} mb-2`}>
+<div
+  class={`admonition admonition-${type} border-l-4 bg-terminal-gray/50 p-4 my-6 rounded-r-md`}
+  style={`border-left-color: ${admonitionConfig.borderColor};`}
+>
+  <div
+    class="admonition-title flex items-center gap-2 font-bold mb-2"
+    style={`color: ${admonitionConfig.color};`}
+  >
     <span class="admonition-icon text-xl">{admonitionConfig.icon}</span>
     <span>{displayTitle}</span>
   </div>

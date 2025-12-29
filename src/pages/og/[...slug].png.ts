@@ -65,7 +65,7 @@ export const GET: APIRoute = async ({ props }) => {
           width: '100%',
           height: '100%',
           backgroundColor: '#0a0a0a',
-          padding: '60px',
+          padding: '80px 120px',
           fontFamily: 'JetBrains Mono',
         },
         children: [

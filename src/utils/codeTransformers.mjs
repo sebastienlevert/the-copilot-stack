@@ -6,10 +6,14 @@ export function customTransformers() {
   return [
     {
       name: 'custom-features',
-      // Pre hook disabled - line numbers feature removed
-      // pre(node) {
-      //   // Line numbers feature disabled
-      // },
+      pre(node) {
+        // Mark mermaid code blocks with a data attribute for the renderer
+        const lang = node.properties?.dataLanguage || node.properties?.className?.[0]?.replace('language-', '');
+        if (lang === 'mermaid') {
+          node.properties.dataLanguage = 'mermaid';
+          node.properties.className = ['language-mermaid'];
+        }
+      },
       line(node, line) {
         const classes = ['line'];
 

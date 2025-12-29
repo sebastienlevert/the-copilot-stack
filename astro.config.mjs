@@ -36,6 +36,7 @@ export default defineConfig({
         'shell',
         'powershell',
         'typespec',
+        'mermaid',
       ],
       transformers: customTransformers(),
     },
